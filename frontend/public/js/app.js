@@ -1,4 +1,4 @@
-const toggle = document.querySelector('.menu-toggle');
+﻿const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav-links');
 if (toggle && nav) {
   toggle.addEventListener('click', () => {
@@ -14,3 +14,5 @@ const yearEl = document.querySelector('#year');
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
+
+
