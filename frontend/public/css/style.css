@@ -1760,19 +1760,86 @@ a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   user-select: none;
   pointer-events: auto;
 }
 
 .avatar-emoji:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.avatar-photo-frame {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--cerulean-bright), var(--marigold), var(--pale-lavender));
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.5), 0 14px 28px rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.avatar-photo-frame::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 8px;
+  border-radius: 6px 6px 0 0;
+  border: 2px solid var(--marigold);
+  border-bottom: none;
+  background: var(--jet);
+}
+
+.avatar-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  background: var(--jet);
+  border: 2px solid var(--jet);
+}
+
+.avatar-wave-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--jet);
+  border: 1.5px solid var(--marigold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 8px rgba(245, 158, 11, 0.4);
+  animation: miniWave 2.2s ease-in-out infinite;
+}
+
+@keyframes miniWave {
+  0%, 100% { transform: rotate(0deg); }
+  20%, 60% { transform: rotate(14deg); }
+  40%, 80% { transform: rotate(-10deg); }
+}
+
+.avatar-emoji:hover .avatar-photo-frame {
+  box-shadow: 0 0 28px rgba(14, 165, 233, 0.8), 0 0 35px rgba(245, 158, 11, 0.5);
 }
 
 .speech-bubble {
   position: absolute;
-  right: 85px;
-  top: 15px;
+  right: 96px;
+  top: 18px;
   background: linear-gradient(135deg, var(--cerulean-bright), #0284c7);
   color: var(--platinum);
   padding: 10px 16px;
@@ -1820,5 +1887,7 @@ a {
 @media(max-width: 768px) {
   .avatar-drop-wrapper { right: 4%; }
   .rope { height: 120px; }
-  .speech-bubble { font-size: 12px; right: 75px; }
+  .speech-bubble { font-size: 12px; right: 84px; }
+  .avatar-photo-frame { width: 72px; height: 72px; }
+  .avatar-wave-badge { width: 24px; height: 24px; font-size: 13px; }
 }
