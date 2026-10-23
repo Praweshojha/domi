@@ -123,3 +123,12 @@ if (globeCanvas && typeof window.createGlobe === 'function') {
     console.warn('WebGL Globe initialization fallback:', err);
   }
 }
+
+// Avatar dismiss handler (compliant with Content Security Policy)
+const avatarDismiss = document.getElementById('avatar-dismiss');
+if (avatarDismiss) {
+  avatarDismiss.addEventListener('click', () => {
+    const avatarDrop = document.getElementById('avatar-drop');
+    if (avatarDrop) avatarDrop.style.display = 'none';
+  });
+}
