@@ -75,7 +75,15 @@
             <div class="cross-bottom-left">LON 85°32'E</div>
           </div>
 
-          <img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img">
+          <!-- Active Telemetry Badge for Nepal -->
+          <div class="nepal-hud-pill">
+            <span class="hud-live-dot"></span>
+            <span>KU-DHULIKHEL [27.62°N, 85.54°E]</span>
+          </div>
+
+          <!-- Interactive 3D WebGL Globe -->
+          <canvas id="cobe-globe" class="cobe-canvas" width="1000" height="1000" aria-label="Interactive 3D Geospatial Globe with Nepal Telemetry"></canvas>
+          <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
         </div>
         <div class="floating-card card-one"><span class="mini-icon">⌖</span><div><b>Spatial thinking</b><small>From data to decisions</small></div></div>
         <div class="floating-card card-two"><span class="mini-icon purple">⌘</span><div><b>Geospatial AI</b><small>Technology with purpose</small></div></div>
@@ -194,6 +202,7 @@
     </section>
   </main>
   <footer class="footer wrap"><a class="brand" href="#home"><span class="brand-mark">P<span>.</span></span><span>PRAWESH OJHA</span></a><span class="footer-note">Built around curiosity, spatial thinking, and useful technology.</span><a href="#home" class="back-top">BACK TO TOP ↑</a><span class="copyright">© <span id="year"></span> Prawesh Ojha</span></footer>
+  <script src="js/cobe.js"></script>
   <script src="js/app.js"></script>
 
   <div id="avatar-drop" class="avatar-drop-wrapper">

@@ -485,6 +485,55 @@ a {
   filter: contrast(1.15) brightness(1.05);
 }
 
+/* 3D WebGL Interactive Globe */
+.cobe-canvas {
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+  display: block;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  z-index: 2;
+  position: relative;
+  filter: drop-shadow(0 0 35px rgba(14, 165, 233, 0.45));
+}
+
+.cobe-canvas:active {
+  cursor: grabbing;
+}
+
+.nepal-hud-pill {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 8, 22, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.3);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--platinum);
+  z-index: 10;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+}
+
+.hud-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--marigold);
+  box-shadow: 0 0 8px var(--marigold);
+  animation: pulseBeacon 1.8s infinite;
+}
+
 /* Futuristic Hologram Orbital Rings */
 .orbit-ring {
   position: absolute;
