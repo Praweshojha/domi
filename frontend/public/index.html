@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1220">
+  <meta name="theme-color" content="#060a12">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="description" content="Prawesh Ojha — Geomatics Engineering student exploring geospatial AI, GIS, remote sensing, and disaster resilience.">
@@ -17,6 +17,28 @@
 </head>
 <body>
   <div class="topline"></div>
+
+  <!-- Futuristic Satellite Telemetry Stream -->
+  <div class="telemetry-bar" aria-hidden="true">
+    <div class="telemetry-track">
+      <div class="telemetry-item"><span class="t-pulse"></span><strong>LIVE TELEMETRY</strong> // DHULIKHEL HQ</div>
+      <div class="telemetry-item"><span class="t-tag">GPS</span> 27.6195° N, 85.5385° E</div>
+      <div class="telemetry-item"><span class="t-tag">ELEV</span> 1,550M AMSL</div>
+      <div class="telemetry-item"><span class="t-tag">DATUM</span> WGS84 · UTM ZONE 45N</div>
+      <div class="telemetry-item"><span class="t-tag">SATELLITE</span> SENTINEL-2 / LANDSAT-9 IN VIEW</div>
+      <div class="telemetry-item"><span class="t-tag">GEO-AI</span> INFERENCE ENGINE READY</div>
+      <div class="telemetry-item"><span class="t-tag">STATUS</span> ALL SYSTEMS NOMINAL</div>
+      <!-- Duplicate for infinite marquee wrap -->
+      <div class="telemetry-item"><span class="t-pulse"></span><strong>LIVE TELEMETRY</strong> // DHULIKHEL HQ</div>
+      <div class="telemetry-item"><span class="t-tag">GPS</span> 27.6195° N, 85.5385° E</div>
+      <div class="telemetry-item"><span class="t-tag">ELEV</span> 1,550M AMSL</div>
+      <div class="telemetry-item"><span class="t-tag">DATUM</span> WGS84 · UTM ZONE 45N</div>
+      <div class="telemetry-item"><span class="t-tag">SATELLITE</span> SENTINEL-2 / LANDSAT-9 IN VIEW</div>
+      <div class="telemetry-item"><span class="t-tag">GEO-AI</span> INFERENCE ENGINE READY</div>
+      <div class="telemetry-item"><span class="t-tag">STATUS</span> ALL SYSTEMS NOMINAL</div>
+    </div>
+  </div>
+
   <header class="nav wrap">
     <a class="brand" href="#home" aria-label="Prawesh Ojha home"><span class="brand-mark">P<span>.</span></span><span>PRAWESH OJHA</span></a>
     <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
@@ -39,7 +61,22 @@
       </div>
       <div class="hero-art" aria-label="Abstract geospatial map illustration">
         <div class="art-glow"></div>
-        <img src="img/hero_globe.jpg" alt="Geomatics Globe" style="width:100%; max-width:560px; position: relative; z-index: 0; mask-image: radial-gradient(circle, black 45%, transparent 70%); -webkit-mask-image: radial-gradient(circle, black 45%, transparent 70%); animation: floatGlobe 6s ease-in-out infinite;">
+        <div class="globe-wrapper">
+          <!-- Concentric Holographic Orbital Rings -->
+          <div class="orbit-ring ring-outer">
+            <div class="satellite-node"><span class="sat-dot"></span>SENTINEL-2</div>
+          </div>
+          <div class="orbit-ring ring-mid"></div>
+          <div class="orbit-ring ring-inner"></div>
+
+          <!-- HUD Crosshair Coordinates -->
+          <div class="hud-crosshair">
+            <div class="cross-top-right">LAT 27°37'N</div>
+            <div class="cross-bottom-left">LON 85°32'E</div>
+          </div>
+
+          <img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img">
+        </div>
         <div class="floating-card card-one"><span class="mini-icon">⌖</span><div><b>Spatial thinking</b><small>From data to decisions</small></div></div>
         <div class="floating-card card-two"><span class="mini-icon purple">⌘</span><div><b>Geospatial AI</b><small>Technology with purpose</small></div></div>
       </div>
@@ -75,6 +112,7 @@
         <div class="project-grid">
           <article class="project-card project-feature">
             <div class="project-visual route-visual">
+              <div class="radar-sweep"></div>
               <div class="visual-label mono">PROJECT CONCEPT · 01</div>
               <svg viewBox="0 0 640 300" role="img" aria-label="Illustrated safe route across a hazard map">
                 <defs><pattern id="routegrid" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M22 0H0V22" fill="none" stroke="#8291a8" stroke-opacity=".2"/></pattern></defs>
