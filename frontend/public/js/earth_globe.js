@@ -71,17 +71,17 @@
   const cloudsMesh = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
   globeGroup.add(cloudsMesh);
 
-  // 3. GEOGRAPHIC COORDINATE GRATICULE (Real Lat/Lon Grid Lines)
+  // 3. GEOGRAPHIC COORDINATE GRATICULE (Contour Ink & Signal Equator)
   const gridGroup = new THREE.Group();
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0x38bdf8,
+    color: 0xC9B99A, // --contour
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.35,
   });
   const equatorMaterial = new THREE.LineBasicMaterial({
-    color: 0xf59e0b, // Marigold for Equator & Prime Meridian
+    color: 0xFF5B14, // --signal
     transparent: true,
-    opacity: 0.45,
+    opacity: 0.65,
   });
 
   // Parallels (Latitude lines at 15° intervals)
@@ -135,24 +135,24 @@
   pinGroup.position.copy(nepalPos);
   pinGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), nepalPos.clone().normalize());
 
-  // Glowing beacon point
+  // Signal Orange beacon point
   const pinHeadGeom = new THREE.SphereGeometry(0.024, 16, 16);
-  const pinHeadMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b }); // Marigold
+  const pinHeadMat = new THREE.MeshBasicMaterial({ color: 0xFF5B14 }); // --signal
   const pinHead = new THREE.Mesh(pinHeadGeom, pinHeadMat);
   pinHead.position.y = 0.05;
   pinGroup.add(pinHead);
 
-  // Pin needle / stalk
+  // Pin needle / stalk in Ink
   const pinStalkGeom = new THREE.CylinderGeometry(0.004, 0.004, 0.05, 8);
-  const pinStalkMat = new THREE.MeshBasicMaterial({ color: 0xf8fafc });
+  const pinStalkMat = new THREE.MeshBasicMaterial({ color: 0x0E1B2C }); // --ink
   const pinStalk = new THREE.Mesh(pinStalkGeom, pinStalkMat);
   pinStalk.position.y = 0.025;
   pinGroup.add(pinStalk);
 
-  // Pulsing ground radar ring
+  // Pulsing ground radar ring in Signal Orange
   const ringGeom = new THREE.RingGeometry(0.015, 0.045, 32);
   const ringMat = new THREE.MeshBasicMaterial({
-    color: 0x0ea5e9,
+    color: 0xFF5B14,
     side: THREE.DoubleSide,
     transparent: true,
     opacity: 0.8,
@@ -168,12 +168,12 @@
   const satOrbitRadius = RADIUS * 1.35;
 
   const satGeom = new THREE.BoxGeometry(0.025, 0.015, 0.035);
-  const satMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.8 });
+  const satMat = new THREE.MeshStandardMaterial({ color: 0xF4EFE3, metalness: 0.7 });
   const satellite = new THREE.Mesh(satGeom, satMat);
 
-  // Solar panel wings
+  // Solar panel wings in Signal Orange
   const panelGeom = new THREE.BoxGeometry(0.07, 0.002, 0.02);
-  const panelMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.9 });
+  const panelMat = new THREE.MeshStandardMaterial({ color: 0xFF5B14, metalness: 0.6 });
   const panels = new THREE.Mesh(panelGeom, panelMat);
   satellite.add(panels);
 
