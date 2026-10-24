@@ -708,8 +708,8 @@ summary:focus-visible {
    COMMON SECTION STYLING & CARTO DIVIDERS
    ========================================================================== */
 .section {
-  padding-top: 96px;
-  padding-bottom: 96px;
+  padding-top: 104px;
+  padding-bottom: 104px;
   position: relative;
   z-index: 5;
 }
@@ -920,107 +920,88 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   JOURNEY & RECOGNITION (Sheet 04/05)
+   JOURNEY & RECOGNITION (Sheet 04/05) — RULED TABLE
    ========================================================================== */
-.journey-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 28px;
+.journey-table-panel {
+  padding: 0;
+  overflow: hidden;
 }
 
-.journey-card {
-  padding: 24px;
-}
-
-.journey-meta {
-  color: var(--signal-text);
-  font-size: 10px;
-  margin-bottom: 8px;
-}
-
-.journey-card h3 {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--ink);
-  margin: 0 0 8px;
-}
-
-.journey-card p {
-  font-size: 14px;
-  line-height: 1.65;
-  color: var(--ink);
-  margin: 0 0 16px;
-  min-height: 48px;
-}
-
-.journey-badge {
-  display: inline-block;
-  font-size: 11px;
-  border: 1px solid var(--ink);
-  padding: 3px 8px;
-  background: var(--paper-2);
-}
-
-.education-band {
+.journey-table {
   display: flex;
+  flex-direction: column;
+}
+
+.journey-row {
+  display: grid;
+  grid-template-columns: 190px 1fr auto;
   align-items: center;
   gap: 24px;
   padding: 24px 32px;
+  border-bottom: 1px solid var(--ink);
+  transition: background-color 0.15s ease;
 }
 
-.edu-emblem {
-  font-size: 18px;
-  font-weight: 600;
-  width: 50px;
-  height: 50px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--ink);
-  background: var(--signal);
-  color: var(--ink);
-  flex-shrink: 0;
+.journey-row:last-child {
+  border-bottom: none;
 }
 
-.edu-body {
-  flex: 1;
+.journey-row:hover {
+  background: rgba(234, 227, 208, 0.45);
 }
 
-.edu-spec {
-  color: var(--ink-muted);
-  font-size: 10px;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.education-band h3 {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 400;
-  margin: 0 0 2px;
-}
-
-.education-band p {
-  font-size: 14px;
-  margin: 0;
-}
-
-.edu-code {
+.journey-cell-date {
   font-size: 11px;
-  color: var(--signal-text);
-  text-align: right;
-  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.journey-cell-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.journey-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.journey-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.journey-cell-badge {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status-badge-ink {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: lowercase;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  padding: 3px 8px;
+  background: var(--paper-2);
+  color: var(--ink);
 }
 
 /* ==========================================================================
-   WHAT I'M EXPLORING SECTION
+   WHAT I'M EXPLORING SECTION (Ruled Rows, No Links)
    ========================================================================== */
 .future-grid {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 40px;
-  align-items: start;
+  align-items: center;
 }
 
 .future-list {
@@ -1029,11 +1010,12 @@ summary:focus-visible {
 }
 
 .future-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 32px 1fr;
   align-items: center;
   gap: 16px;
   padding: 16px 0;
-  border-bottom: 1px solid var(--ink-muted);
+  border-bottom: 1px solid var(--ink);
   transition: transform 0.15s ease;
 }
 
@@ -1054,17 +1036,23 @@ summary:focus-visible {
   font-weight: 600;
 }
 
-.future-row b {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 600;
-  display: block;
+.future-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.future-row small {
+.future-title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.future-sub {
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--ink-muted);
-  display: block;
 }
 
 /* ==========================================================================
@@ -1437,15 +1425,17 @@ summary:focus-visible {
   .plates-grid {
     grid-template-columns: 1fr;
   }
-  .journey-grid {
+  .journey-row {
     grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 20px;
   }
-  .education-band {
-    flex-direction: column;
-    align-items: flex-start;
+  .journey-cell-badge {
+    justify-content: flex-start;
   }
-  .edu-code {
-    text-align: left;
+  .future-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
   .contact-titleblock-grid {
     grid-template-columns: 1fr;

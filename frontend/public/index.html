@@ -187,9 +187,9 @@
     <!-- ABOUT SECTION (Sheet 02/05) -->
     <section class="section wrap" id="about">
       <div class="paper-panel about-panel reveal-on-scroll">
-        <div class="sheet-label mono">sheet 02/05 · about & background</div>
+        <div class="sheet-label mono">sheet 02/05 · about me</div>
         <div class="section-title-wrap">
-          <h2>Curious by nature.<br><em>Driven to build.</em></h2>
+          <h2>Curious by nature.<br>Driven to <em>build.</em></h2>
           <!-- Cartographic divider: Scale bar + North arrow -->
           <div class="carto-divider" aria-hidden="true">
             <div class="scale-bar"><span>0</span><span>25m</span><span>50m</span><span>100m</span></div>
@@ -215,9 +215,9 @@
 
     <!-- SELECTED WORK SECTION (Sheet 03/05) -->
     <section class="section wrap" id="work">
-      <div class="sheet-label mono">sheet 03/05 · selected work & plates</div>
+      <div class="sheet-label mono">sheet 03/05 · selected work</div>
       <div class="section-title-wrap">
-        <h2>Ideas with <em>real-world purpose.</em></h2>
+        <h2>Ideas with <em>real-world</em> purpose.</h2>
         <p class="section-lead">A selection of project directions and technical work across geospatial analysis, routing, and risk-informed decision-making.</p>
       </div>
 
@@ -227,11 +227,11 @@
           <div class="plate-crop-tl"></div><div class="plate-crop-tr"></div>
           <div class="plate-crop-bl"></div><div class="plate-crop-br"></div>
           <div class="plate-header mono">
-            <span>plate 01 · route analysis</span>
+            <span>plate 01 · routing & hazard mcdm</span>
             <span class="rubber-stamp">in development</span>
           </div>
           <div class="plate-visual">
-            <!-- Contour Line SVG illustration -->
+            <!-- Contour Line SVG illustration (stroke --contour) -->
             <svg viewBox="0 0 640 240" class="contour-svg" role="img" aria-label="Contour lines and emergency routing path">
               <defs>
                 <pattern id="surveygrid" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -251,7 +251,7 @@
               <circle cx="60" cy="210" r="4.5" fill="#0E1B2C" stroke="#FF5B14" stroke-width="2"/>
               <circle cx="540" cy="60" r="4.5" fill="#FF5B14" stroke="#0E1B2C" stroke-width="2"/>
               <g fill="#0E1B2C" font-family="'IBM Plex Mono', monospace" font-size="10">
-                <text x="40" y="230">pt. a [start]</text>
+                <text x="40" y="230">pt. a [origin]</text>
                 <text x="500" y="50">pt. b [safe zone]</text>
                 <text x="240" y="100" fill="#C2410C">elevation contour · 1450m</text>
               </g>
@@ -264,7 +264,7 @@
               <span>openstreetmap</span>
               <span>osrm</span>
               <span>dem</span>
-              <span>multi-criteria analysis</span>
+              <span>mcdm</span>
             </div>
           </div>
         </article>
@@ -274,8 +274,8 @@
           <div class="plate-crop-tl"></div><div class="plate-crop-tr"></div>
           <div class="plate-crop-bl"></div><div class="plate-crop-br"></div>
           <div class="plate-header mono">
-            <span>plate 02 · desktop system</span>
-            <span class="rubber-stamp">completed</span>
+            <span>plate 02 · desktop geomatics tool</span>
+            <span class="rubber-stamp">complete</span>
           </div>
           <div class="plate-visual">
             <svg viewBox="0 0 320 180" class="contour-svg" role="img" aria-label="Surveying grid and coordinate system diagram">
@@ -297,7 +297,7 @@
             <div class="tech-tags mono">
               <span>java</span>
               <span>swing</span>
-              <span>data structures</span>
+              <span>spatial data</span>
             </div>
           </div>
         </article>
@@ -307,8 +307,8 @@
           <div class="plate-crop-tl"></div><div class="plate-crop-tr"></div>
           <div class="plate-crop-bl"></div><div class="plate-crop-br"></div>
           <div class="plate-header mono">
-            <span>plate 03 · logic puzzle</span>
-            <span class="rubber-stamp">completed</span>
+            <span>plate 03 · algorithmic logic puzzle</span>
+            <span class="rubber-stamp">complete</span>
           </div>
           <div class="plate-visual">
             <svg viewBox="0 0 320 180" class="contour-svg" role="img" aria-label="Logic grid and algorithm matrix">
@@ -342,10 +342,10 @@
           </div>
         </article>
       </div>
-      <p class="project-note mono">project status note: concepts and work in progress are stated transparently and not presented as finished products.</p>
+      <p class="project-note mono">plate status note: concepts and field research are stated transparently as prototypes in development.</p>
     </section>
 
-    <!-- JOURNEY & RECOGNITION SECTION (Sheet 04/05) -->
+    <!-- JOURNEY & RECOGNITION SECTION (Sheet 04/05) — RULED TABLE -->
     <section class="section wrap" id="journey">
       <div class="sheet-label mono">sheet 04/05 · journey & recognition</div>
       <div class="section-title-wrap">
@@ -353,81 +353,105 @@
         <p class="section-lead">Building experience through engineering, teamwork, competitions, and student leadership.</p>
       </div>
 
-      <div class="journey-grid">
-        <div class="journey-card paper-panel reveal-on-scroll">
-          <div class="journey-meta mono">record no. 01 / 2026</div>
-          <h3>AI/ML Competition</h3>
-          <p>Awarded first prize for developing an innovative modelling solution in a competitive technical event.</p>
-          <div class="journey-badge mono"><span class="signal-tri">▲</span> 1st prize citation</div>
-        </div>
+      <!-- Ruled Table Layout Inside One Paper Panel -->
+      <div class="journey-table-panel paper-panel reveal-on-scroll">
+        <div class="journey-table">
+          <div class="journey-row">
+            <div class="journey-cell-date mono">2026 · record 01</div>
+            <div class="journey-cell-main">
+              <h3 class="journey-title">AI/ML Competition</h3>
+              <p class="journey-desc">Awarded first prize for developing an innovative modelling solution in a competitive technical event.</p>
+            </div>
+            <div class="journey-cell-badge mono">
+              <span class="rubber-stamp">1st prize</span>
+            </div>
+          </div>
 
-        <div class="journey-card paper-panel reveal-on-scroll">
-          <div class="journey-meta mono">record no. 02 / jul 2026</div>
-          <h3>Technical Innovation</h3>
-          <p>Recognized for developing and presenting a successful technical solution during a major tech event.</p>
-          <div class="journey-badge mono"><span class="signal-tri">▲</span> top achievement</div>
-        </div>
+          <div class="journey-row">
+            <div class="journey-cell-date mono">jul 2026 · record 02</div>
+            <div class="journey-cell-main">
+              <h3 class="journey-title">Technical Innovation</h3>
+              <p class="journey-desc">Recognized for developing and presenting a successful technical solution during a major tech event.</p>
+            </div>
+            <div class="journey-cell-badge mono">
+              <span class="rubber-stamp">achievement</span>
+            </div>
+          </div>
 
-        <div class="journey-card paper-panel reveal-on-scroll">
-          <div class="journey-meta mono">record no. 03 / 2025–26</div>
-          <h3>Student Leadership</h3>
-          <p>Elected to an executive role to organize, manage, and coordinate student activities and department events.</p>
-          <div class="journey-badge mono"><span class="signal-tri">▲</span> coordinator</div>
-        </div>
-      </div>
+          <div class="journey-row">
+            <div class="journey-cell-date mono">2025–26 · record 03</div>
+            <div class="journey-cell-main">
+              <h3 class="journey-title">Student Leadership</h3>
+              <p class="journey-desc">Elected to an executive role to organize, manage, and coordinate student activities and department events.</p>
+            </div>
+            <div class="journey-cell-badge mono">
+              <span class="rubber-stamp">coordinator</span>
+            </div>
+          </div>
 
-      <!-- KU Education Band: Ruled title block layout -->
-      <div class="education-band paper-panel reveal-on-scroll">
-        <div class="edu-emblem mono">ku</div>
-        <div class="edu-body">
-          <span class="mono edu-spec">education credentials · dhulikhel, nepal</span>
-          <h3>Kathmandu University</h3>
-          <p>Bachelor’s studies in Geomatics Engineering</p>
+          <!-- Education Record in Ruled Table -->
+          <div class="journey-row journey-edu-row">
+            <div class="journey-cell-date mono">academic record</div>
+            <div class="journey-cell-main">
+              <h3 class="journey-title">Kathmandu University</h3>
+              <p class="journey-desc">Bachelor’s studies in Geomatics Engineering · Dhulikhel, Nepal</p>
+            </div>
+            <div class="journey-cell-badge mono">
+              <span class="status-badge-ink">geomatics eng.</span>
+            </div>
+          </div>
         </div>
-        <div class="edu-code mono">dept. geomatics<br>spec. geo-ai & gis</div>
       </div>
     </section>
 
-    <!-- EXPLORATION & WHAT I'M EXPLORING -->
+    <!-- EXPLORATION & WHAT I'M EXPLORING (One Paper Panel, Ruled Rows) -->
     <section class="section wrap future-section">
       <div class="paper-panel reveal-on-scroll">
-        <div class="sheet-label mono">sheet 05/05 · exploration & contact</div>
+        <div class="sheet-label mono">field records · what i'm exploring</div>
         <div class="future-grid">
           <div>
-            <h2>Big problems need<br><em>better spatial thinking.</em></h2>
+            <h2>Big problems need<br>better spatial <em>thinking.</em></h2>
           </div>
           <div class="future-list mono">
             <div class="future-row">
               <span class="row-num">01</span>
-              <div><b>Geospatial AI</b><small>turning spatial data into actionable insights.</small></div>
-              <span class="signal-tri">↗</span>
+              <div class="future-info">
+                <b class="future-title">Geospatial AI</b>
+                <small class="future-sub">turning spatial data into actionable insights.</small>
+              </div>
             </div>
             <div class="future-row">
               <span class="row-num">02</span>
-              <div><b>Disaster risk & resilience</b><small>supporting safer communities in mountain regions.</small></div>
-              <span class="signal-tri">↗</span>
+              <div class="future-info">
+                <b class="future-title">Disaster risk & resilience</b>
+                <small class="future-sub">supporting safer communities in mountain regions.</small>
+              </div>
             </div>
             <div class="future-row">
               <span class="row-num">03</span>
-              <div><b>Research & Earth observation</b><small>building a foundation for rigorous, useful research.</small></div>
-              <span class="signal-tri">↗</span>
+              <div class="future-info">
+                <b class="future-title">Research & Earth observation</b>
+                <small class="future-sub">building a foundation for rigorous, useful research.</small>
+              </div>
             </div>
             <div class="future-row">
               <span class="row-num">04</span>
-              <div><b>WebGIS & decision tools</b><small>making complex geospatial workflows accessible.</small></div>
-              <span class="signal-tri">↗</span>
+              <div class="future-info">
+                <b class="future-title">WebGIS & decision tools</b>
+                <small class="future-sub">making complex geospatial workflows accessible.</small>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT SECTION: Ruled Title-Block Grid -->
+    <!-- CONTACT SECTION (Sheet 05/05): Ruled Title-Block Grid -->
     <section class="section wrap contact-section" id="contact">
       <div class="paper-panel contact-panel reveal-on-scroll">
-        <div class="sheet-label mono">schedule · contact & inquiries</div>
+        <div class="sheet-label mono">sheet 05/05 · contact & inquiries</div>
         <div class="contact-header">
-          <h2>Have a meaningful problem<br>to solve? <em>Let’s talk.</em></h2>
+          <h2>Have a meaningful problem to solve?<br><em>Let’s talk.</em></h2>
           <p class="contact-lead">I’m interested in internships, research opportunities, geospatial projects, and collaborations where technology can make a practical difference.</p>
           <div class="contact-actions">
             <a class="btn-survey btn-primary" href="mailto:ojhaprawesh@gmail.com">email me ↗</a>
@@ -435,11 +459,11 @@
           </div>
         </div>
 
-        <!-- Ruled Title-Block Grid -->
+        <!-- Ruled Title-Block Grid of Ruled Cells -->
         <div class="contact-titleblock-grid" id="social-links-container">
           <a class="tb-card" href="https://www.linkedin.com/in/prawesh-ojha-784a24263/" target="_blank" rel="noopener noreferrer">
             <div class="tb-tag mono">field 01 · linkedin</div>
-            <div class="tb-val-serif">Connect with me ↗</div>
+            <div class="tb-val-serif">Prawesh Ojha ↗</div>
           </a>
           <a class="tb-card" href="mailto:ojhaprawesh@gmail.com" id="gmail-link">
             <div class="tb-tag mono">field 02 · direct email</div>
@@ -450,8 +474,8 @@
             <div class="tb-val-serif">Praweshojha ↗</div>
           </a>
           <div class="tb-card tb-info">
-            <div class="tb-tag mono">field 04 · coordinates</div>
-            <div class="tb-val-serif">Nepal · Global Collaboration</div>
+            <div class="tb-tag mono">field 04 · based in</div>
+            <div class="tb-val-serif">Dhulikhel, Nepal</div>
           </div>
         </div>
       </div>
