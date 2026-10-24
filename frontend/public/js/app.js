@@ -18,14 +18,17 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
-// Avatar Dismiss Handler (Instant, CSP-compliant, click, keyboard & 5-second auto-dismiss)
+// Avatar Dismiss Handler (Auto-dismisses with smooth retraction after 5 seconds)
 const avatarWrapper = document.getElementById('avatar-drop');
+let avatarDismissed = false;
+
 const dismissAvatar = () => {
-  if (avatarWrapper && !avatarWrapper.classList.contains('is-hidden')) {
+  if (avatarWrapper && !avatarDismissed) {
+    avatarDismissed = true;
     avatarWrapper.classList.add('is-hidden');
     setTimeout(() => {
       avatarWrapper.style.display = 'none';
-    }, 650);
+    }, 950);
   }
 };
 
