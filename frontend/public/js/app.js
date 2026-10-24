@@ -174,15 +174,24 @@ const contactForm = document.getElementById('contact-form');
 const contactStatus = document.getElementById('contact-status');
 const contactSubmitBtn = document.getElementById('contact-submit-btn');
 
-// Security Sanitizer: Defends against XSS, Control Characters & Spreadsheet Formula Injection
+// Security Sanitizer: Defends against XSS, Control Characters, Zero-Width Characters & Multi-line Formula Injection
 const sanitizeField = (str, maxLen = 3000) => {
   if (typeof str !== 'string') return '';
-  // Strip control characters & null bytes
-  let clean = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim().slice(0, maxLen);
-  // Defend against CSV / Google Sheets Formula Injection (=, +, -, @, \t, \r)
-  if (/^[=+\-@\t\r]/.test(clean)) {
-    clean = "'" + clean;
-  }
+  // Strip control characters, null bytes, and invisible zero-width unicode characters
+  let clean = str
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F\u200B-\u200D\uFEFF]/g, '')
+    .trim()
+    .slice(0, maxLen);
+
+  // Multi-line Formula Injection defense: Neutralize any line starting with formula characters (=, +, -, @, \t, \r)
+  clean = clean.split('\n').map(line => {
+    const trimmed = line.trimStart();
+    if (/^[=+\-@\t\r]/.test(trimmed)) {
+      return "'" + line;
+    }
+    return line;
+  }).join('\n');
+
   return clean;
 };
 

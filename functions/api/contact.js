@@ -1,14 +1,26 @@
 // Cloudflare Pages Serverless Function for /api/contact
+// Hardened Defense: Anti-CSRF Origin Check, Payload Size Cap, Multi-line Formula Sanitization, Server-Side Honeypot
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
+// Security Sanitizer: Defends against Control Characters, Zero-Width Characters & Multi-line Spreadsheet Formula Injection
 const sanitizeString = (str, maxLen = 3000) => {
     if (typeof str !== 'string') return '';
-    let clean = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim().slice(0, maxLen);
-    // Defend against CSV / Google Sheets Formula Injection (=, +, -, @, \t, \r)
-    if (/^[=+\-@\t\r]/.test(clean)) {
-        clean = "'" + clean;
-    }
+    // Strip null bytes, control characters, and invisible zero-width unicode characters
+    let clean = str
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F\u200B-\u200D\uFEFF]/g, '')
+        .trim()
+        .slice(0, maxLen);
+
+    // Multi-line Formula Injection defense: Neutralize any line starting with formula characters (=, +, -, @, \t, \r)
+    clean = clean.split('\n').map(line => {
+        const trimmed = line.trimStart();
+        if (/^[=+\-@\t\r]/.test(trimmed)) {
+            return "'" + line;
+        }
+        return line;
+    }).join('\n');
+
     return clean;
 };
 
@@ -20,8 +32,30 @@ export async function onRequestPost(context) {
 
     try {
         const { request } = context;
+
+        // 1. Origin / Referer Validation (Anti-CSRF & Cross-Origin Relay Defense)
+        const origin = request.headers.get('origin') || '';
+        if (origin) {
+            const isAllowed = origin.includes('praweshojha.com.np') || origin.includes('localhost') || origin.includes('127.0.0.1');
+            if (!isAllowed) {
+                return new Response(
+                    JSON.stringify({ success: false, message: 'Cross-origin request forbidden.' }),
+                    { status: 403, headers: jsonHeader }
+                );
+            }
+        }
+
+        // 2. Payload Size Defense (Prevents Memory Exhaustion / DoS attacks)
+        const contentLength = parseInt(request.headers.get('content-length') || '0', 10);
+        if (contentLength > 50000) {
+            return new Response(
+                JSON.stringify({ success: false, message: 'Payload size exceeds allowable threshold.' }),
+                { status: 413, headers: jsonHeader }
+            );
+        }
+
+        // 3. Content-Type Validation
         const contentType = request.headers.get('content-type') || '';
-        
         if (!contentType.includes('application/json')) {
             return new Response(
                 JSON.stringify({ success: false, message: 'Invalid Content-Type. Expected application/json.' }),
@@ -30,8 +64,17 @@ export async function onRequestPost(context) {
         }
 
         const body = await request.json();
-        let { name, email, message } = body;
+        let { name, email, message, website } = body;
 
+        // 4. Server-Side Honeypot Trap (Automated spam bots fill this hidden field)
+        if (typeof website === 'string' && website.trim().length > 0) {
+            return new Response(
+                JSON.stringify({ success: true, message: 'Thank you! Your message has been received.' }),
+                { status: 200, headers: jsonHeader }
+            );
+        }
+
+        // 5. Strict Type & Presence Validation
         if (typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string') {
             return new Response(
                 JSON.stringify({ success: false, message: 'Invalid data format. Fields must be strings.' }),
@@ -39,9 +82,9 @@ export async function onRequestPost(context) {
             );
         }
 
-        name = sanitizeString(name);
-        email = sanitizeString(email).toLowerCase();
-        message = sanitizeString(message);
+        name = sanitizeString(name, 100);
+        email = sanitizeString(email, 254).toLowerCase();
+        message = sanitizeString(message, 3000);
 
         if (!name || !email || !message) {
             return new Response(
@@ -71,7 +114,7 @@ export async function onRequestPost(context) {
             );
         }
 
-        // Forward inquiry directly to Prawesh's Google Drive Sheet & Gmail via Google Apps Script
+        // 6. Forward Sanitized Payload to Google Apps Script Webhook
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEgoNYmtR96Qyk-x7lxRj-jAVHS8x9-t8bIT2iJnKl1AKxaFEeSlUEUhIDutwprs7J/exec';
         try {
             const googleRes = await fetch(GOOGLE_SCRIPT_URL, {
