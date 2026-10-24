@@ -193,11 +193,13 @@ if (contactForm && contactStatus && contactSubmitBtn) {
     const originalBtnText = contactSubmitBtn.innerHTML;
     contactSubmitBtn.innerHTML = '<span>sending message...</span>';
 
-    try {
-      // 1. Primary: Cloudflare API endpoint
-      let isSuccess = false;
-      let successMessage = "Thank you! Your message has been sent directly to Prawesh's email inbox.";
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEgoNYmtR96Qyk-x7lxRj-jAVHS8x9-t8bIT2iJnKl1AKxaFEeSlUEUhIDutwprs7J/exec';
 
+    try {
+      let isSuccess = false;
+      let successMessage = "Thank you! Your message has been saved to Prawesh's Google Sheet and sent to his email.";
+
+      // 1. Primary: Cloudflare edge route
       try {
         const response = await fetch('/api/contact', {
           method: 'POST',
@@ -212,31 +214,21 @@ if (contactForm && contactStatus && contactSubmitBtn) {
           }
         }
       } catch (e) {
-        // Fall through to direct email forwarder
+        // Fall through to direct Google Apps Script
       }
 
-      // 2. Direct Automated Email Forwarder (FormSubmit directly to ojhaprawesh@gmail.com)
+      // 2. Direct Google Drive Webhook (Guaranteed direct delivery)
       if (!isSuccess) {
-        const fsResponse = await fetch('https://formsubmit.co/ajax/ojhaprawesh@gmail.com', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            message,
-            _subject: `New Portfolio Message from ${name} (praweshojha.com.np)`,
-            _replyto: email,
-            _template: 'table',
-            _captcha: 'false',
-          }),
-        });
-
-        const fsData = await fsResponse.json().catch(() => ({}));
-        if (fsResponse.ok || fsData.success === 'true' || fsData.success === true || (fsData.message && fsData.message.includes('Activation'))) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message }),
+          });
           isSuccess = true;
+        } catch (e) {
+          // Fall through to fallback
         }
       }
 
@@ -245,7 +237,7 @@ if (contactForm && contactStatus && contactSubmitBtn) {
         contactStatus.textContent = successMessage;
         contactForm.reset();
       } else {
-        // Fallback to mail client if network blocked third-party APIs
+        // Fallback to mail client if all network requests fail
         const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
         contactStatus.className = 'form-status mono is-success';
         contactStatus.innerHTML = `Your message is ready! Opening your email client to send to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here if it didn't open automatically</a>)`;

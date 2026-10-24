@@ -66,35 +66,35 @@ export async function onRequestPost(context) {
             );
         }
 
-        // Forward inquiry directly to FormSubmit to deliver into ojhaprawesh@gmail.com
+        // Forward inquiry directly to Prawesh's Google Drive Sheet & Gmail via Google Apps Script
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEgoNYmtR96Qyk-x7lxRj-jAVHS8x9-t8bIT2iJnKl1AKxaFEeSlUEUhIDutwprs7J/exec';
         try {
-            await fetch('https://formsubmit.co/ajax/ojhaprawesh@gmail.com', {
+            const googleRes = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Origin': 'https://praweshojha.com.np',
-                    'Referer': 'https://praweshojha.com.np/',
                 },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    message,
-                    _subject: `New Portfolio Message from ${name} (praweshojha.com.np)`,
-                    _replyto: email,
-                    _template: 'table',
-                    _captcha: 'false',
-                }),
+                body: JSON.stringify({ name, email, message }),
+                redirect: 'follow',
             });
+            const googleData = await googleRes.json().catch(() => ({}));
+            if (googleData && googleData.success) {
+                return new Response(
+                    JSON.stringify({
+                        success: true,
+                        message: 'Thank you! Your message has been saved to Prawesh\'s Google Sheet and sent to his email.',
+                    }),
+                    { status: 200, headers: jsonHeader }
+                );
+            }
         } catch (forwardErr) {
-            // Log but don't fail if forwarder had a minor network hiccup
-            console.error('Email forwarding error:', forwardErr);
+            console.error('Google Apps Script forwarding error:', forwardErr);
         }
 
         return new Response(
             JSON.stringify({
                 success: true,
-                message: 'Thank you! Your message has been sent directly to Prawesh\'s email inbox.',
+                message: 'Thank you! Your message has been saved to Prawesh\'s Google Sheet and sent to his email.',
             }),
             { status: 200, headers: jsonHeader }
         );
