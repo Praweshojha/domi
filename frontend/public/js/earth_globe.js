@@ -1,6 +1,7 @@
 // Practical 3D Real Earth Globe powered by Three.js
 // Features: NASA Blue Marble texture, realistic oceans & continents, 
 // atmospheric clouds, geographic coordinate grid (lat/lon), and GPS pinpoint on Nepal.
+// Styled to Terrain Tokens: Forest green, Ochre, Ink, and Sand (Zero blue lighting).
 
 (function () {
   const container = document.getElementById('globe-container');
@@ -8,8 +9,8 @@
 
   // Scene setup
   const scene = new THREE.Scene();
-  const width = container.clientWidth || 460;
-  const height = container.clientHeight || 460;
+  const width = container.clientWidth || 420;
+  const height = container.clientHeight || 420;
 
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   camera.position.z = 2.8;
@@ -22,7 +23,7 @@
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-  // Lighting - Sun illumination & atmospheric rim glow
+  // Lighting - Sun illumination & subtle forest rim glow (Strictly NO blue)
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
   scene.add(ambientLight);
 
@@ -30,7 +31,7 @@
   sunLight.position.set(5, 3, 5);
   scene.add(sunLight);
 
-  const rimLight = new THREE.DirectionalLight(0x0ea5e9, 0.6);
+  const rimLight = new THREE.DirectionalLight(0x166534, 0.45); // Subtle forest rim illumination
   rimLight.position.set(-5, -2, -3);
   scene.add(rimLight);
 
@@ -71,17 +72,17 @@
   const cloudsMesh = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
   globeGroup.add(cloudsMesh);
 
-  // 3. GEOGRAPHIC COORDINATE GRATICULE (Contour Ink & Signal Equator)
+  // 3. GEOGRAPHIC COORDINATE GRATICULE (Contour Green & Ochre Equator)
   const gridGroup = new THREE.Group();
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0xC9B99A, // --contour
+    color: 0x2D6A4F, // --contour green
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.32,
   });
   const equatorMaterial = new THREE.LineBasicMaterial({
-    color: 0xFF5B14, // --signal
+    color: 0xD97706, // --ochre
     transparent: true,
-    opacity: 0.65,
+    opacity: 0.7,
   });
 
   // Parallels (Latitude lines at 15° intervals)
@@ -135,24 +136,24 @@
   pinGroup.position.copy(nepalPos);
   pinGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), nepalPos.clone().normalize());
 
-  // Signal Orange beacon point
+  // Ochre beacon point
   const pinHeadGeom = new THREE.SphereGeometry(0.024, 16, 16);
-  const pinHeadMat = new THREE.MeshBasicMaterial({ color: 0xFF5B14 }); // --signal
+  const pinHeadMat = new THREE.MeshBasicMaterial({ color: 0xD97706 }); // --ochre
   const pinHead = new THREE.Mesh(pinHeadGeom, pinHeadMat);
   pinHead.position.y = 0.05;
   pinGroup.add(pinHead);
 
   // Pin needle / stalk in Ink
   const pinStalkGeom = new THREE.CylinderGeometry(0.004, 0.004, 0.05, 8);
-  const pinStalkMat = new THREE.MeshBasicMaterial({ color: 0x0E1B2C }); // --ink
+  const pinStalkMat = new THREE.MeshBasicMaterial({ color: 0x14261C }); // --ink
   const pinStalk = new THREE.Mesh(pinStalkGeom, pinStalkMat);
   pinStalk.position.y = 0.025;
   pinGroup.add(pinStalk);
 
-  // Pulsing ground radar ring in Signal Orange
+  // Pulsing ground radar ring in Ochre
   const ringGeom = new THREE.RingGeometry(0.015, 0.045, 32);
   const ringMat = new THREE.MeshBasicMaterial({
-    color: 0xFF5B14,
+    color: 0xD97706,
     side: THREE.DoubleSide,
     transparent: true,
     opacity: 0.8,
@@ -168,19 +169,19 @@
   const satOrbitRadius = RADIUS * 1.35;
 
   const satGeom = new THREE.BoxGeometry(0.025, 0.015, 0.035);
-  const satMat = new THREE.MeshStandardMaterial({ color: 0xF4EFE3, metalness: 0.7 });
+  const satMat = new THREE.MeshStandardMaterial({ color: 0xFAF7F0, metalness: 0.6 }); // --sand
   const satellite = new THREE.Mesh(satGeom, satMat);
 
-  // Solar panel wings in Signal Orange
+  // Solar panel wings in Forest Green
   const panelGeom = new THREE.BoxGeometry(0.07, 0.002, 0.02);
-  const panelMat = new THREE.MeshStandardMaterial({ color: 0xFF5B14, metalness: 0.6 });
+  const panelMat = new THREE.MeshStandardMaterial({ color: 0x166534, metalness: 0.5 }); // --forest
   const panels = new THREE.Mesh(panelGeom, panelMat);
   satellite.add(panels);
 
   satelliteGroup.add(satellite);
   globeGroup.add(satelliteGroup);
 
-  // Satellite orbit track
+  // Satellite orbit track in faint Ochre (No blue!)
   const orbitPoints = [];
   for (let i = 0; i <= 100; i++) {
     const angle = (i / 100) * Math.PI * 2;
@@ -189,7 +190,7 @@
   const orbitGeom = new THREE.BufferGeometry().setFromPoints(orbitPoints);
   const orbitLine = new THREE.Line(
     orbitGeom,
-    new THREE.LineDashedMaterial({ color: 0x38bdf8, dashSize: 0.05, gapSize: 0.03, transparent: true, opacity: 0.4 })
+    new THREE.LineDashedMaterial({ color: 0xD97706, dashSize: 0.05, gapSize: 0.03, transparent: true, opacity: 0.35 })
   );
   globeGroup.add(orbitLine);
 

@@ -1,6 +1,6 @@
 /* ==========================================================================
-   PRAWESH OJHA — SURVEY SHEET & CARTOGRAPHIC PORTFOLIO
-   "Printed survey/map sheet laid over drone footage"
+   PRAWESH OJHA — TERRAIN TOKENS PORTFOLIO
+   "Geospatial Technology & AI for Real-World Problems"
    ========================================================================== */
 
 *, *::before, *::after {
@@ -8,31 +8,35 @@
 }
 
 :root {
-  /* Exact Survey Sheet Tokens */
-  --paper: #F4EFE3;
-  --paper-2: #EAE3D0;
-  --ink: #0E1B2C;
-  --ink-muted: #5B6472;
-  --signal: #FF5B14;       /* Fills, markers, underlines only */
-  --signal-text: #C2410C;  /* Any orange text */
-  --contour: #C9B99A;      /* Topographic map lines */
+  /* Exact Terrain Tokens */
+  --sand: #FAF7F0;
+  --sand-2: #F0EADB;
+  --ink: #14261C;
+  --text: #3F4F44;
+  --muted: #5B6A60;
+  --forest: #166534;        /* Sole action color; white text on it */
+  --forest-hover: #14532D;
+  --ochre: #D97706;         /* Markers, underlines, dots only */
+  --ochre-text: #B45309;    /* Any orange/ochre text */
+  --line: rgba(20, 38, 28, 0.2);
+  --contour: rgba(22, 101, 52, 0.3);
   --max: 1200px;
 
   /* Typography */
   --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 76px;
 }
 
 body {
   margin: 0;
-  background-color: var(--paper-2);
-  color: var(--ink);
+  background-color: var(--sand-2);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.65;
@@ -53,12 +57,13 @@ h1, h2, h3, h4, h5, h6 {
 h1 em, h2 em, h3 em, h4 em, h5 em, h6 em {
   font-style: italic;
   font-weight: 400;
-  text-decoration: underline var(--signal) 3px;
+  text-decoration: underline var(--ochre) 3px;
   text-underline-offset: 6px;
 }
 
 p {
   max-width: 60ch;
+  color: var(--text);
 }
 
 a {
@@ -67,7 +72,7 @@ a {
   transition: transform 0.15s ease, color 0.15s ease;
 }
 
-/* Keyboard Accessible Focus Rings (2px signal, 3px offset) */
+/* Keyboard Accessible Focus Rings (2px forest, 3px offset) */
 a:focus-visible,
 button:focus-visible,
 [tabindex]:focus-visible,
@@ -75,7 +80,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 2px solid var(--signal) !important;
+  outline: 2px solid var(--forest) !important;
   outline-offset: 3px !important;
 }
 
@@ -87,13 +92,13 @@ summary:focus-visible {
 }
 
 .wrap {
-  width: min(var(--max), calc(100% - 72px));
+  width: min(var(--max), calc(100% - 48px));
   margin-inline: auto;
 }
 
 /* ==========================================================================
    HARD CONSTRAINT 1: CONTINUOUS AMBIENT BACKGROUND VIDEO
-   (No scrim, no overlay — raw video stays visible through frame and between panels)
+   (Untouched: fixed, z-index -10, raw video clearly visible between panels)
    ========================================================================== */
 .bg-video-container {
   position: fixed;
@@ -104,7 +109,7 @@ summary:focus-visible {
   z-index: -10;
   overflow: hidden;
   pointer-events: none;
-  background-color: var(--paper-2);
+  background-color: var(--sand-2);
 }
 
 #bg-video {
@@ -118,163 +123,11 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   SIGNATURE ELEMENT 1: NEATLINE FRAME
-   (16px paper band, ink rules, tick marks, graticule labels, scroll indicator)
-   ========================================================================== */
-.neatline-frame {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 980;
-  border: 16px solid var(--paper);
-  outline: 1.5px solid var(--ink);
-  outline-offset: -16px;
-  box-shadow: inset 0 0 0 0.6px var(--ink);
-}
-
-/* Graticule labels on top and left borders */
-.neatline-graticule-top {
-  position: absolute;
-  top: -15px;
-  left: 28px;
-  right: 28px;
-  height: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  color: var(--ink-muted);
-  user-select: none;
-}
-
-.neatline-graticule-left {
-  position: absolute;
-  top: 36px;
-  bottom: 36px;
-  left: -15px;
-  width: 14px;
-  writing-mode: vertical-lr;
-  transform: rotate(180deg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  color: var(--ink-muted);
-  user-select: none;
-}
-
-.neatline-scroll-track {
-  position: absolute;
-  top: 16px;
-  bottom: 16px;
-  right: -13px;
-  width: 12px;
-}
-
-.neatline-pointer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--signal);
-  font-size: 11px;
-  line-height: 1;
-  transition: transform 0.1s linear;
-  user-select: none;
-}
-
-@media(max-width: 900px) {
-  .neatline-frame {
-    border-width: 8px;
-    outline-offset: -8px;
-  }
-  .neatline-graticule-top,
-  .neatline-graticule-left {
-    display: none;
-  }
-  .neatline-scroll-track {
-    right: -8px;
-  }
-  .wrap {
-    width: min(var(--max), calc(100% - 36px));
-  }
-}
-
-/* ==========================================================================
-   SIGNATURE ELEMENT 5: RETICLE CURSOR (Fine Pointer Only)
-   ========================================================================== */
-.reticle-cursor {
-  display: none;
-}
-
-@media(pointer: fine) {
-  .reticle-cursor {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 28px;
-    height: 28px;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    transition: color 0.15s ease;
-    color: var(--ink);
-  }
-
-  .reticle-crosshair {
-    width: 28px;
-    height: 28px;
-    position: relative;
-  }
-
-  .reticle-crosshair::before {
-    content: '';
-    position: absolute;
-    top: 13px;
-    left: 0;
-    width: 28px;
-    height: 1px;
-    background: currentColor;
-  }
-
-  .reticle-crosshair::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 13px;
-    width: 1px;
-    height: 28px;
-    background: currentColor;
-  }
-
-  .reticle-coords {
-    position: absolute;
-    top: 30px;
-    left: 6px;
-    white-space: nowrap;
-    font-size: 9px;
-    line-height: 1;
-    color: var(--ink-muted);
-    background: var(--paper);
-    padding: 2px 4px;
-    border: 0.5px solid var(--ink);
-  }
-
-  .reticle-cursor.is-signal {
-    color: var(--signal);
-  }
-  .reticle-cursor.is-signal .reticle-coords {
-    color: var(--signal-text);
-    border-color: var(--signal);
-  }
-}
-
-/* ==========================================================================
-   STATIC TOP SURVEYOR BAR (28px ink bar, paper mono text)
+   STATIC TOP TICKER BAR (28px ink bar, sand mono text)
    ========================================================================== */
 .survey-ticker {
   background: var(--ink);
-  color: var(--paper);
+  color: var(--sand);
   height: 28px;
   display: flex;
   align-items: center;
@@ -292,12 +145,12 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   HEADER (Full-width paper bar, 64px, 1px ink bottom border, serif wordmark)
+   HEADER (Full-width sand bar, 56px, 1px line border, serif wordmark)
    ========================================================================== */
 .survey-header {
-  height: 64px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--ink);
+  height: 56px;
+  background: var(--sand);
+  border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
   z-index: 960;
@@ -329,65 +182,62 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   gap: 28px;
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 15px;
   font-weight: 500;
   text-transform: lowercase;
+  color: var(--text);
 }
 
 .nav-links a:not(.nav-signal-btn):hover {
-  color: var(--signal-text);
-  text-decoration: underline var(--signal) 1.5px;
+  color: var(--forest);
+  text-decoration: underline var(--ochre) 1.5px;
   text-underline-offset: 4px;
 }
 
 .nav-signal-btn {
-  background: var(--signal) !important;
-  color: var(--ink) !important;
+  background: var(--forest) !important;
+  color: #FFFFFF !important;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 13px;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
-  padding: 7px 16px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-size: 14px;
+  border: 1px solid var(--forest);
+  border-radius: 10px;
+  padding: 7px 18px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 .nav-signal-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--forest-hover) !important;
+  border-color: var(--forest-hover) !important;
+  transform: translateY(-2px);
 }
 
 .menu-toggle {
   display: none;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 2px;
+  background: var(--sand);
+  border: 1px solid var(--line);
+  border-radius: 8px;
   color: var(--ink);
   padding: 6px;
   cursor: pointer;
 }
 
 /* ==========================================================================
-   PAPER PANELS SYSTEM (Flat 0.96 paper, 1px border, inner rule, 2px radius)
+   TERRAIN PANELS SYSTEM (0.95 sand opacity, 1px line border, 16px radius, no shadow)
    ========================================================================== */
 .paper-panel {
-  background: rgba(244, 239, 227, 0.96);
-  border: 1px solid var(--ink);
-  outline: 1px solid var(--ink);
-  outline-offset: -5px;
-  border-radius: 2px;
+  background: rgba(250, 247, 240, 0.95);
+  border: 1px solid var(--line);
+  border-radius: 16px;
   padding: 36px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.paper-panel:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: none;
+  outline: none;
+  transition: transform 0.2s ease;
 }
 
 .sheet-label {
-  color: var(--signal-text);
+  color: var(--ochre-text);
   font-size: 11px;
   font-weight: 500;
   margin-bottom: 16px;
@@ -395,7 +245,7 @@ summary:focus-visible {
 }
 
 .signal-tri {
-  color: var(--signal);
+  color: var(--ochre);
   display: inline-block;
   margin-right: 4px;
 }
@@ -427,7 +277,7 @@ summary:focus-visible {
   font-family: var(--font-display);
   font-size: clamp(3rem, 6.5vw, 5.5rem);
   font-weight: 400;
-  line-height: 0.98;
+  line-height: 1.02;
   letter-spacing: -0.01em;
   color: var(--ink);
   margin: 0 0 20px;
@@ -435,7 +285,7 @@ summary:focus-visible {
 
 .hero-copy h1 em {
   font-style: italic;
-  text-decoration: underline var(--signal) 3px;
+  text-decoration: underline var(--ochre) 3px;
   text-underline-offset: 6px;
   font-weight: 400;
 }
@@ -443,30 +293,39 @@ summary:focus-visible {
 .hero-lead {
   font-size: 17px;
   line-height: 1.65;
-  color: var(--ink);
+  color: var(--text);
   max-width: 56ch;
   margin: 0 0 22px;
 }
 
 .hero-lead strong {
   font-weight: 600;
+  color: var(--ink);
 }
 
-.hero-status,
-.status-block {
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--forest);
+  display: inline-block;
+}
+
+.hero-status {
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--ink-muted);
-  border: 1px dashed var(--ink-muted);
-  padding: 6px 12px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 6px 14px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-bottom: 26px;
-  background: var(--paper-2);
-  border-radius: 2px;
+  background: var(--sand-2);
+  border-radius: 8px;
 }
 
-/* Survey Buttons: 2px radius, 1px ink border */
+/* Terrain Action Buttons: 10px radius, Forest action color */
 .hero-actions {
   display: flex;
   align-items: center;
@@ -481,39 +340,39 @@ summary:focus-visible {
   gap: 8px;
   height: 44px;
   padding: 0 22px;
-  border-radius: 2px;
+  border-radius: 10px;
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 500;
-  border: 1px solid var(--ink);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-primary {
-  background: var(--signal);
-  color: var(--ink);
+  background: var(--forest);
+  color: #FFFFFF;
+  border: 1px solid var(--forest);
 }
 
 .btn-primary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--forest-hover);
+  border-color: var(--forest-hover);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--ink);
+  color: var(--forest);
+  border: 1px solid var(--forest);
 }
 
 .btn-secondary:hover {
-  background: var(--paper-2);
-  transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: rgba(22, 101, 52, 0.08);
+  transform: translateY(-2px);
 }
 
 /* ==========================================================================
-   SIGNATURE ELEMENT 4: INSTRUMENT DIAL GLOBE
-   (380-420px, 72-tick bezel, signal crosshairs, Nepal pin, caption)
+   INSTRUMENT DIAL GLOBE (380-420px, thin sand rings, ochre crosshairs, Nepal pin)
    ========================================================================== */
 .hero-art {
   display: flex;
@@ -534,10 +393,8 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  outline: 1px solid var(--ink);
-  outline-offset: -5px;
+  background: var(--sand);
+  border: 1px solid var(--line);
   border-radius: 50%;
   box-shadow: none;
 }
@@ -558,15 +415,15 @@ summary:focus-visible {
   100% { transform: rotate(360deg); }
 }
 
-/* Thin signal crosshair lines through dial center */
+/* Thin 0.8px ochre crosshair lines through dial center */
 .dial-crosshair-h {
   position: absolute;
   top: 50%;
   left: 10px;
   right: 10px;
-  height: 1px;
-  background: var(--signal);
-  opacity: 0.85;
+  height: 0.8px;
+  background: var(--ochre);
+  opacity: 0.8;
   pointer-events: none;
   z-index: 12;
 }
@@ -576,9 +433,9 @@ summary:focus-visible {
   left: 50%;
   top: 10px;
   bottom: 10px;
-  width: 1px;
-  background: var(--signal);
-  opacity: 0.85;
+  width: 0.8px;
+  background: var(--ochre);
+  opacity: 0.8;
   pointer-events: none;
   z-index: 12;
 }
@@ -589,7 +446,7 @@ summary:focus-visible {
   height: 82%;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   z-index: 5;
 }
 
@@ -621,7 +478,7 @@ summary:focus-visible {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--signal);
+  background: var(--ochre);
   border: 1.5px solid var(--ink);
   animation: pinPulse 2s ease-in-out infinite;
 }
@@ -636,30 +493,33 @@ summary:focus-visible {
   font-size: 10px;
   font-weight: 600;
   color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--ink);
+  background: var(--sand);
+  border: 1px solid var(--line);
+  border-radius: 4px;
   padding: 2px 6px;
-  box-shadow: 1px 1px 0 var(--ink);
 }
 
 /* Under dial: Fig. 1 caption panel */
 .dial-caption {
   width: auto;
-  max-width: 320px;
+  max-width: 380px;
   margin-top: 18px;
   text-align: center;
   font-size: 11px;
   padding: 8px 16px;
-  color: var(--ink-muted);
+  border-radius: 10px;
+  color: var(--muted);
 }
 
 /* ==========================================================================
-   RULED 4-CELL PAPER STRIP (GIS / AI/ML / RS / GNSS)
+   RULED 4-CELL SAND STRIP (GIS / AI/ML / RS / GNSS)
    ========================================================================== */
 .hero-strip {
   margin-top: 48px;
   padding: 0;
   width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .hero-strip-grid {
@@ -671,8 +531,8 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 18px 24px;
-  border-right: 1px solid var(--ink);
+  padding: 20px 24px;
+  border-right: 1px solid var(--line);
 }
 
 .strip-cell:last-child {
@@ -681,7 +541,7 @@ summary:focus-visible {
 
 .strip-num {
   font-size: 11px;
-  color: var(--signal-text);
+  color: var(--ochre-text);
   font-weight: 600;
 }
 
@@ -692,16 +552,16 @@ summary:focus-visible {
 }
 
 .strip-title {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 1;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.1;
   color: var(--ink);
 }
 
 .strip-sub {
   font-size: 11px;
-  color: var(--ink-muted);
+  color: var(--muted);
 }
 
 /* ==========================================================================
@@ -736,14 +596,14 @@ summary:focus-visible {
 .future-grid h2 em,
 .contact-header h2 em {
   font-style: italic;
-  text-decoration: underline var(--signal) 3px;
+  text-decoration: underline var(--ochre) 3px;
   text-underline-offset: 6px;
   font-weight: 400;
 }
 
 .section-lead {
   font-size: 16px;
-  color: var(--ink-muted);
+  color: var(--muted);
   max-width: 54ch;
   margin: 0;
 }
@@ -759,17 +619,17 @@ summary:focus-visible {
 .scale-bar {
   display: flex;
   height: 8px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 9px;
-  color: var(--ink-muted);
+  color: var(--muted);
 }
 
 .scale-bar span {
   padding: 0 6px;
   display: inline-flex;
   align-items: center;
-  border-right: 1px solid var(--ink);
+  border-right: 1px solid var(--line);
 }
 
 .scale-bar span:last-child {
@@ -778,7 +638,7 @@ summary:focus-visible {
 
 .scale-bar span:nth-child(even) {
   background: var(--ink);
-  color: var(--paper);
+  color: var(--sand);
 }
 
 .north-arrow {
@@ -794,7 +654,7 @@ summary:focus-visible {
 .about-text p {
   font-size: 16px;
   line-height: 1.7;
-  color: var(--ink);
+  color: var(--text);
   margin: 0 0 16px;
   max-width: 60ch;
 }
@@ -803,6 +663,7 @@ summary:focus-visible {
   font-size: 19px;
   line-height: 1.6;
   font-weight: 500;
+  color: var(--ink);
 }
 
 .interest-tags, .tech-tags {
@@ -813,17 +674,17 @@ summary:focus-visible {
 }
 
 .interest-tags span, .tech-tags span {
+  font-family: var(--font-mono);
   font-size: 11px;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
   padding: 3px 9px;
-  background: var(--paper-2);
-  color: var(--ink);
+  background: var(--sand-2);
+  color: var(--muted);
 }
 
 /* ==========================================================================
-   SIGNATURE ELEMENT 7: PROJECT CARDS AS "PLATES" (Sheet 03/05)
-   (Mono plate no, corner crop marks, contour SVGs, benchmark triangle, rubber stamp)
+   PROJECT CARDS AS "PLATES" (Sheet 03/05)
    ========================================================================== */
 .plates-grid {
   display: grid;
@@ -836,10 +697,15 @@ summary:focus-visible {
   padding: 28px;
   display: flex;
   flex-direction: column;
+  border-radius: 16px;
 }
 
 .plate-card:first-child {
   grid-column: 1 / -1;
+}
+
+.plate-card:hover {
+  transform: translateY(-3px);
 }
 
 /* 10px L-shaped corner crop marks */
@@ -850,38 +716,39 @@ summary:focus-visible {
   pointer-events: none;
 }
 
-.plate-crop-tl { top: -2px; left: -2px; border-top: 2px solid var(--ink); border-left: 2px solid var(--ink); }
-.plate-crop-tr { top: -2px; right: -2px; border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); }
-.plate-crop-bl { bottom: -2px; left: -2px; border-bottom: 2px solid var(--ink); border-left: 2px solid var(--ink); }
-.plate-crop-br { bottom: -2px; right: -2px; border-bottom: 2px solid var(--ink); border-right: 2px solid var(--ink); }
+.plate-crop-tl { top: -2px; left: -2px; border-top: 1.5px solid rgba(20, 38, 28, 0.45); border-left: 1.5px solid rgba(20, 38, 28, 0.45); }
+.plate-crop-tr { top: -2px; right: -2px; border-top: 1.5px solid rgba(20, 38, 28, 0.45); border-right: 1.5px solid rgba(20, 38, 28, 0.45); }
+.plate-crop-bl { bottom: -2px; left: -2px; border-bottom: 1.5px solid rgba(20, 38, 28, 0.45); border-left: 1.5px solid rgba(20, 38, 28, 0.45); }
+.plate-crop-br { bottom: -2px; right: -2px; border-bottom: 1.5px solid rgba(20, 38, 28, 0.45); border-right: 1.5px solid rgba(20, 38, 28, 0.45); }
 
 .plate-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 11px;
-  color: var(--ink-muted);
+  color: var(--muted);
   margin-bottom: 16px;
 }
 
-/* Rubber Stamp Status (rotate -4deg, 1.5px --signal-text border, mono lowercase) */
+/* Rubber Stamp Status (rotate -4deg, 1.5px --ochre-text border, mono lowercase, radius 4px) */
 .rubber-stamp {
   display: inline-block;
   transform: rotate(-4deg);
-  border: 1.5px solid var(--signal-text);
-  color: var(--signal-text);
+  border: 1.5px solid var(--ochre-text);
+  color: var(--ochre-text);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
   text-transform: lowercase;
   padding: 2px 8px;
-  border-radius: 2px;
-  background: var(--paper);
+  border-radius: 4px;
+  background: var(--sand);
 }
 
 .plate-visual {
-  border: 1px solid var(--ink);
-  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--sand-2);
   margin-bottom: 20px;
   overflow: hidden;
 }
@@ -901,21 +768,21 @@ summary:focus-visible {
 }
 
 .plate-body h3 a:hover {
-  color: var(--signal-text);
-  text-decoration: underline var(--signal) 2px;
+  color: var(--forest);
+  text-decoration: underline var(--ochre) 2px;
   text-underline-offset: 4px;
 }
 
 .plate-body p {
   font-size: 15px;
   line-height: 1.65;
-  color: var(--ink);
+  color: var(--text);
   margin: 0 0 18px;
 }
 
 .project-note {
   margin-top: 24px;
-  color: var(--ink-muted);
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -925,6 +792,7 @@ summary:focus-visible {
 .journey-table-panel {
   padding: 0;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .journey-table {
@@ -938,7 +806,7 @@ summary:focus-visible {
   align-items: center;
   gap: 24px;
   padding: 24px 32px;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
   transition: background-color 0.15s ease;
 }
 
@@ -947,12 +815,12 @@ summary:focus-visible {
 }
 
 .journey-row:hover {
-  background: rgba(234, 227, 208, 0.45);
+  background: rgba(240, 234, 219, 0.5);
 }
 
 .journey-cell-date {
   font-size: 11px;
-  color: var(--ink-muted);
+  color: var(--muted);
 }
 
 .journey-cell-main {
@@ -973,7 +841,7 @@ summary:focus-visible {
 .journey-desc {
   font-size: 15px;
   line-height: 1.6;
-  color: var(--ink);
+  color: var(--text);
   margin: 0;
   max-width: 60ch;
 }
@@ -987,10 +855,10 @@ summary:focus-visible {
   font-family: var(--font-mono);
   font-size: 10px;
   text-transform: lowercase;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
   padding: 3px 8px;
-  background: var(--paper-2);
+  background: var(--sand-2);
   color: var(--ink);
 }
 
@@ -1015,7 +883,7 @@ summary:focus-visible {
   align-items: center;
   gap: 16px;
   padding: 16px 0;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
   transition: transform 0.15s ease;
 }
 
@@ -1032,7 +900,7 @@ summary:focus-visible {
 
 .row-num {
   font-size: 12px;
-  color: var(--signal-text);
+  color: var(--ochre-text);
   font-weight: 600;
 }
 
@@ -1052,7 +920,7 @@ summary:focus-visible {
 .future-sub {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--ink-muted);
+  color: var(--muted);
 }
 
 /* ==========================================================================
@@ -1064,7 +932,7 @@ summary:focus-visible {
 
 .contact-lead {
   font-size: 16px;
-  color: var(--ink);
+  color: var(--text);
   max-width: 56ch;
   margin: 0 0 24px;
 }
@@ -1078,18 +946,20 @@ summary:focus-visible {
 .contact-titleblock-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--ink);
-  background: var(--paper-2);
+  border: 1px solid var(--line);
+  background: var(--sand-2);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .tb-card {
-  padding: 20px;
-  border-right: 1px solid var(--ink);
+  padding: 22px;
+  border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: var(--paper);
-  transition: transform 0.15s ease, background 0.15s ease;
+  background: var(--sand);
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 .tb-card:last-child {
@@ -1097,13 +967,13 @@ summary:focus-visible {
 }
 
 .tb-card:hover {
-  background: var(--paper-2);
-  transform: translate(-1px, -1px);
+  background: var(--sand-2);
+  transform: translateY(-2px);
 }
 
 .tb-tag {
   font-size: 10px;
-  color: var(--signal-text);
+  color: var(--ochre-text);
 }
 
 .tb-val-serif {
@@ -1113,12 +983,12 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   FOOTER: FULL-WIDTH PAPER BAR
+   FOOTER: FULL-WIDTH SAND BAR
    ========================================================================== */
 .survey-footer {
-  background: var(--paper);
-  border-top: 1px solid var(--ink);
-  padding: 24px 0 28px;
+  background: var(--sand);
+  border-top: 1px solid var(--line);
+  padding: 28px 0 32px;
   position: relative;
   z-index: 10;
   width: 100%;
@@ -1146,7 +1016,7 @@ summary:focus-visible {
 }
 
 .f-lbl {
-  color: var(--ink-muted);
+  color: var(--muted);
   font-size: 10px;
   text-transform: lowercase;
 }
@@ -1159,12 +1029,12 @@ summary:focus-visible {
 
 .footer-links a {
   font-size: 11px;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .footer-links a:hover {
-  color: var(--signal-text);
-  text-decoration: underline var(--signal) 1px;
+  color: var(--forest);
+  text-decoration: underline var(--ochre) 1px;
 }
 
 .f-right {
@@ -1172,16 +1042,20 @@ summary:focus-visible {
 }
 
 .back-top {
-  color: var(--signal-text);
+  color: var(--forest);
   font-weight: 600;
 }
 
 .back-top:hover {
-  text-decoration: underline var(--signal) 1px;
+  text-decoration: underline var(--forest) 1px;
+}
+
+.copyright {
+  color: var(--muted);
 }
 
 /* ==========================================================================
-   MINIMAL 40px SQUARE PAPER VIDEO CONTROL BUTTON
+   MINIMAL 40px SAND VIDEO CONTROL BUTTON (10px Radius)
    ========================================================================== */
 .survey-video-btn {
   position: fixed;
@@ -1189,10 +1063,10 @@ summary:focus-visible {
   right: 24px;
   width: 40px;
   height: 40px;
-  border-radius: 2px;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
+  border-radius: 10px;
+  background: var(--sand);
+  border: 1px solid var(--line);
+  box-shadow: none;
   display: grid;
   place-items: center;
   color: var(--ink);
@@ -1202,8 +1076,8 @@ summary:focus-visible {
 }
 
 .survey-video-btn:hover {
-  transform: translate(-1px, -1px);
-  background: var(--paper-2);
+  transform: translateY(-2px);
+  background: var(--sand-2);
 }
 
 .survey-video-btn .icon-play {
@@ -1219,7 +1093,7 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   HANGING AVATAR ON SURVEYOR FLAGGING TAPE CORD
+   HANGING AVATAR (DISMISSIBLE)
    ========================================================================== */
 .avatar-drop-wrapper {
   position: fixed;
@@ -1242,8 +1116,8 @@ summary:focus-visible {
 .rope {
   width: 3px;
   height: 150px;
-  background-image: repeating-linear-gradient(45deg, var(--signal), var(--signal) 6px, var(--ink) 6px, var(--ink) 12px);
-  box-shadow: 1px 1px 0 var(--ink);
+  background-image: repeating-linear-gradient(45deg, var(--forest), var(--forest) 6px, var(--ink) 6px, var(--ink) 12px);
+  box-shadow: none;
 }
 
 .avatar-body {
@@ -1267,11 +1141,11 @@ summary:focus-visible {
   position: relative;
   width: 76px;
   height: 76px;
-  border-radius: 2px;
+  border-radius: 12px;
   padding: 3px;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--sand);
+  border: 1.5px solid var(--line);
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1280,11 +1154,10 @@ summary:focus-visible {
 .avatar-photo {
   width: 100%;
   height: 100%;
-  border-radius: 0;
+  border-radius: 8px;
   object-fit: cover;
   object-position: center 20%;
   display: block;
-  border: 1px solid var(--ink);
 }
 
 .avatar-wave-badge {
@@ -1293,23 +1166,25 @@ summary:focus-visible {
   right: -4px;
   width: 24px;
   height: 24px;
-  border-radius: 2px;
-  background: var(--signal);
-  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--forest);
+  border: 1px solid var(--line);
   display: grid;
   place-items: center;
   font-size: 13px;
-  box-shadow: 1px 1px 0 var(--ink);
+  color: #fff;
+  box-shadow: none;
 }
 
 .speech-bubble {
   position: absolute;
   right: 86px;
   top: 12px;
-  background: var(--paper);
+  background: var(--sand);
   color: var(--ink);
-  border: 1px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
+  border: 1px solid var(--line);
+  box-shadow: none;
+  border-radius: 8px;
   padding: 6px 12px;
   font-size: 12px;
   white-space: nowrap;
@@ -1330,7 +1205,7 @@ summary:focus-visible {
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 6px solid var(--ink);
+  border-left: 6px solid var(--line);
 }
 
 @keyframes dropDown {
@@ -1349,7 +1224,7 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   SCROLL REVEAL (panels fade up 12px, 450ms, once)
+   SCROLL REVEAL (Panels fade up 12px, 450ms, once)
    ========================================================================== */
 .reveal-on-scroll {
   opacity: 0;
@@ -1417,11 +1292,14 @@ summary:focus-visible {
   }
   .strip-cell:nth-child(1),
   .strip-cell:nth-child(2) {
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
   }
 }
 
 @media(max-width: 768px) {
+  .wrap {
+    width: min(var(--max), calc(100% - 32px));
+  }
   .plates-grid {
     grid-template-columns: 1fr;
   }
@@ -1442,7 +1320,7 @@ summary:focus-visible {
   }
   .tb-card {
     border-right: 0;
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
   }
   .tb-card:last-child {
     border-bottom: 0;
@@ -1453,16 +1331,16 @@ summary:focus-visible {
   .nav-links {
     display: none;
     position: absolute;
-    top: 64px;
+    top: 56px;
     left: 0;
     right: 0;
     padding: 20px;
-    background: var(--paper);
-    border-bottom: 1px solid var(--ink);
+    background: var(--sand);
+    border-bottom: 1px solid var(--line);
     flex-direction: column;
     align-items: stretch;
     gap: 14px;
-    box-shadow: 0 10px 0 var(--ink);
+    box-shadow: 0 4px 12px rgba(20, 38, 28, 0.08);
   }
   .nav-links.open {
     display: flex;
@@ -1497,11 +1375,11 @@ summary:focus-visible {
     right: 20px;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid var(--ink);
+    border-bottom: 5px solid var(--line);
     border-top: none;
   }
   .survey-footer {
-    padding: 24px 0 68px; /* Leave bottom clearance for video control button so nothing is clipped */
+    padding: 24px 0 68px; /* Leave bottom clearance for video control button */
   }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -1519,7 +1397,7 @@ summary:focus-visible {
   }
   .strip-cell {
     border-right: none;
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line);
     padding: 14px 18px;
   }
   .strip-cell:last-child {
@@ -1571,8 +1449,5 @@ summary:focus-visible {
   .reveal-on-scroll {
     opacity: 1 !important;
     transform: none !important;
-  }
-  .reticle-cursor {
-    display: none !important;
   }
 }
