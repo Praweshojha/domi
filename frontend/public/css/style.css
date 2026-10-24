@@ -412,14 +412,20 @@ summary:focus-visible {
 
 .hero-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 560px) minmax(380px, 420px);
+  justify-content: space-between;
   align-items: center;
-  gap: 40px;
+  gap: 48px;
+}
+
+.hero-copy {
+  max-width: 560px;
+  width: 100%;
 }
 
 .hero-copy h1 {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6.2vw, 5.8rem);
+  font-size: clamp(3rem, 6.5vw, 5.5rem);
   font-weight: 400;
   line-height: 0.98;
   letter-spacing: -0.01em;
@@ -446,16 +452,18 @@ summary:focus-visible {
   font-weight: 600;
 }
 
+.hero-status,
 .status-block {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink-muted);
   border: 1px dashed var(--ink-muted);
   padding: 6px 12px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
   background: var(--paper-2);
+  border-radius: 2px;
 }
 
 /* Survey Buttons: 2px radius, 1px ink border */
@@ -505,7 +513,7 @@ summary:focus-visible {
 
 /* ==========================================================================
    SIGNATURE ELEMENT 4: INSTRUMENT DIAL GLOBE
-   (400-440px, 72-tick bezel, signal crosshairs, Nepal pin, caption & ruled panel)
+   (380-420px, 72-tick bezel, signal crosshairs, Nepal pin, caption)
    ========================================================================== */
 .hero-art {
   display: flex;
@@ -513,22 +521,25 @@ summary:focus-visible {
   align-items: center;
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   justify-self: end;
+  align-self: center;
 }
 
 .dial-wrapper {
   position: relative;
-  width: min(420px, 100%);
-  height: 420px;
+  width: min(400px, 100%);
+  height: 400px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--paper);
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: -5px;
   border-radius: 50%;
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: none;
 }
 
 .dial-bezel-svg {
@@ -631,84 +642,66 @@ summary:focus-visible {
   box-shadow: 1px 1px 0 var(--ink);
 }
 
-/* Under dial: Fig. 1 caption panel & two-cell ruled cards */
+/* Under dial: Fig. 1 caption panel */
 .dial-caption {
-  width: 100%;
-  margin-top: 24px;
+  width: auto;
+  max-width: 320px;
+  margin-top: 18px;
   text-align: center;
   font-size: 11px;
-  padding: 10px 16px;
+  padding: 8px 16px;
   color: var(--ink-muted);
-}
-
-.dial-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  width: 100%;
-  margin-top: 14px;
-}
-
-.dial-card {
-  padding: 18px 20px;
-}
-
-.dial-card .card-meta {
-  color: var(--signal-text);
-  font-size: 10px;
-  margin-bottom: 4px;
-}
-
-.dial-card b {
-  font-family: var(--font-display);
-  font-size: 19px;
-  color: var(--ink);
-  display: block;
-}
-
-.dial-card p {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-muted);
-  margin: 4px 0 0;
 }
 
 /* ==========================================================================
-   SIGNATURE ELEMENT 6: RULED ENGINEERING TITLE BLOCK STRIP
+   RULED 4-CELL PAPER STRIP (GIS / AI/ML / RS / GNSS)
    ========================================================================== */
-.title-block-strip {
-  background: var(--paper);
-  border-block: 1.5px solid var(--ink);
-  position: relative;
-  z-index: 5;
+.hero-strip {
+  margin-top: 48px;
+  padding: 0;
+  width: 100%;
 }
 
-.title-block-grid {
+.hero-strip-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
-.tb-cell {
+.strip-cell {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px 20px;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
   border-right: 1px solid var(--ink);
 }
 
-.tb-cell:last-child {
-  border-right: 0;
+.strip-cell:last-child {
+  border-right: none;
 }
 
-.tb-label {
-  font-size: 10px;
-  color: var(--ink-muted);
+.strip-num {
+  font-size: 11px;
+  color: var(--signal-text);
+  font-weight: 600;
 }
 
-.tb-val {
-  font-size: 12px;
-  font-weight: 500;
+.strip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.strip-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
   color: var(--ink);
+}
+
+.strip-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
 }
 
 /* ==========================================================================
@@ -1383,15 +1376,15 @@ summary:focus-visible {
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS (1440, 1024, 768, 390px)
+   RESPONSIVE BREAKPOINTS (1024, 900, 768, 520, 390px)
    ========================================================================== */
 @media(max-width: 1024px) {
   .hero-layout {
-    gap: 28px;
+    gap: 32px;
   }
   .dial-wrapper {
-    width: 360px;
-    height: 360px;
+    width: 380px;
+    height: 380px;
   }
   .contact-titleblock-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1407,24 +1400,40 @@ summary:focus-visible {
   }
 }
 
-@media(max-width: 768px) {
+@media(max-width: 900px) {
   .hero-layout {
     grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .hero-copy {
+    max-width: 100%;
   }
   .hero-art {
     justify-self: center;
-    max-width: 360px;
+    align-self: center;
+    max-width: 280px;
+    margin-inline: auto;
   }
   .dial-wrapper {
     width: 280px;
     height: 280px;
   }
-  .title-block-grid {
-    grid-template-columns: 1fr 1fr;
+  .dial-caption {
+    max-width: 280px;
   }
-  .tb-cell:nth-child(2) {
-    border-right: 0;
+  .hero-strip-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+  .strip-cell:nth-child(2) {
+    border-right: none;
+  }
+  .strip-cell:nth-child(1),
+  .strip-cell:nth-child(2) {
+    border-bottom: 1px solid var(--ink);
+  }
+}
+
+@media(max-width: 768px) {
   .plates-grid {
     grid-template-columns: 1fr;
   }
@@ -1514,6 +1523,17 @@ summary:focus-visible {
   /* On compact mobile viewports, completely suppress speech bubble so it NEVER covers any content */
   .speech-bubble {
     display: none !important;
+  }
+  .hero-strip-grid {
+    grid-template-columns: 1fr;
+  }
+  .strip-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--ink);
+    padding: 14px 18px;
+  }
+  .strip-cell:last-child {
+    border-bottom: none;
   }
   .footer-grid {
     grid-template-columns: 1fr;
