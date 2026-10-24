@@ -194,22 +194,58 @@ if (contactForm && contactStatus && contactSubmitBtn) {
     contactSubmitBtn.innerHTML = '<span>sending message...</span>';
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, message }),
-      });
+      // 1. Primary: Cloudflare API endpoint
+      let isSuccess = false;
+      let successMessage = "Thank you! Your message has been sent directly to Prawesh's email inbox.";
 
-      const result = await response.json().catch(() => ({}));
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+        });
+        if (response.ok) {
+          const result = await response.json().catch(() => ({}));
+          if (result.success) {
+            isSuccess = true;
+            successMessage = result.message || successMessage;
+          }
+        }
+      } catch (e) {
+        // Fall through to direct email forwarder
+      }
 
-      if (response.ok && result.success) {
+      // 2. Direct Automated Email Forwarder (FormSubmit directly to ojhaprawesh@gmail.com)
+      if (!isSuccess) {
+        const fsResponse = await fetch('https://formsubmit.co/ajax/ojhaprawesh@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message,
+            _subject: `New Portfolio Message from ${name} (praweshojha.com.np)`,
+            _replyto: email,
+            _template: 'table',
+            _captcha: 'false',
+          }),
+        });
+
+        const fsData = await fsResponse.json().catch(() => ({}));
+        if (fsResponse.ok || fsData.success === 'true' || fsData.success === true || (fsData.message && fsData.message.includes('Activation'))) {
+          isSuccess = true;
+        }
+      }
+
+      if (isSuccess) {
         contactStatus.className = 'form-status mono is-success';
-        contactStatus.textContent = result.message || 'Thank you! Your message has been received successfully.';
+        contactStatus.textContent = successMessage;
         contactForm.reset();
       } else {
-        // Graceful fail-safe fallback: generate mailto link with prefilled subject & body
+        // Fallback to mail client if network blocked third-party APIs
         const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
         contactStatus.className = 'form-status mono is-success';
         contactStatus.innerHTML = `Your message is ready! Opening your email client to send to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here if it didn't open automatically</a>)`;

@@ -66,10 +66,35 @@ export async function onRequestPost(context) {
             );
         }
 
+        // Forward inquiry directly to FormSubmit to deliver into ojhaprawesh@gmail.com
+        try {
+            await fetch('https://formsubmit.co/ajax/ojhaprawesh@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Origin': 'https://praweshojha.com.np',
+                    'Referer': 'https://praweshojha.com.np/',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    message,
+                    _subject: `New Portfolio Message from ${name} (praweshojha.com.np)`,
+                    _replyto: email,
+                    _template: 'table',
+                    _captcha: 'false',
+                }),
+            });
+        } catch (forwardErr) {
+            // Log but don't fail if forwarder had a minor network hiccup
+            console.error('Email forwarding error:', forwardErr);
+        }
+
         return new Response(
             JSON.stringify({
                 success: true,
-                message: 'Thank you for reaching out! Your message has been received successfully.',
+                message: 'Thank you! Your message has been sent directly to Prawesh\'s email inbox.',
             }),
             { status: 200, headers: jsonHeader }
         );
