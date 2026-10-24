@@ -41,18 +41,58 @@ html {
   scroll-padding-top: 110px;
 }
 
-body {
-  margin: 0;
+/* --- CONTINUOUS AMBIENT BACKGROUND VIDEO --- */
+.bg-video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
   background-color: var(--jet-black);
+}
+
+#bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: brightness(0.68) contrast(1.12) saturate(1.1);
+  transition: opacity 0.5s ease;
+}
+
+/* Semi-translucent dark glassmorphism scrim preserving optimal text contrast */
+.bg-video-scrim {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 50% 10%, rgba(28, 14, 42, 0.45) 0%, transparent 60%),
+    radial-gradient(circle at 80% 30%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, rgba(245, 158, 11, 0.10) 0%, transparent 50%),
+    linear-gradient(to bottom, rgba(6, 7, 10, 0.50) 0%, rgba(6, 7, 10, 0.68) 50%, rgba(6, 7, 10, 0.85) 100%);
+  backdrop-filter: blur(0.5px);
+}
+
+/* Subtle coordinate grid overlay complementing the video */
+.bg-video-grid {
+  position: absolute;
+  inset: 0;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(28, 14, 42, 0.75) 0%, transparent 65%),
-    radial-gradient(circle at 85% 25%, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 12% 65%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 75% 85%, rgba(196, 181, 253, 0.09) 0%, transparent 55%),
     linear-gradient(rgba(203, 213, 225, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(203, 213, 225, 0.035) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-  background-attachment: fixed;
+  background-size: 40px 40px;
+}
+
+body {
+  margin: 0;
+  background-color: transparent;
   color: var(--text);
   font-family: Manrope, system-ui, -apple-system, sans-serif;
   line-height: 1.65;
@@ -721,7 +761,8 @@ a {
 /* --- PROOF STRIP (HIGH-TECH STATS) --- */
 .proof-strip {
   border-block: 1px solid var(--line);
-  background: linear-gradient(180deg, #130a1c 0%, #080911 100%);
+  background: linear-gradient(180deg, rgba(19, 10, 28, 0.75) 0%, rgba(8, 9, 17, 0.75) 100%);
+  backdrop-filter: blur(8px);
   position: relative;
   overflow: hidden;
 }
@@ -1890,4 +1931,63 @@ a {
   .speech-bubble { font-size: 12px; right: 84px; }
   .avatar-photo-frame { width: 72px; height: 72px; }
   .avatar-wave-badge { width: 24px; height: 24px; font-size: 13px; }
+  .motion-toggle-pill { bottom: 16px; left: 16px; padding: 6px 11px; font-size: 10px; }
+}
+
+/* --- MOTION TOGGLE PILL --- */
+.motion-toggle-pill {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 15px;
+  background: rgba(11, 14, 23, 0.78);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(203, 213, 225, 0.2);
+  border-radius: 9999px;
+  color: var(--ice-silver);
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(14, 165, 233, 0.2);
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.motion-toggle-pill:hover {
+  background: rgba(22, 13, 34, 0.92);
+  border-color: var(--cerulean-bright);
+  color: var(--platinum);
+  box-shadow: 0 6px 24px rgba(14, 165, 233, 0.4);
+  transform: translateY(-2px);
+}
+
+.motion-indicator-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--marigold);
+  box-shadow: 0 0 8px var(--marigold);
+  animation: radarBeacon 1.8s ease-in-out infinite;
+}
+
+.motion-toggle-pill.paused .motion-indicator-pulse {
+  background: #64748b;
+  box-shadow: none;
+  animation: none;
+}
+
+.motion-toggle-pill.paused .motion-status {
+  color: #94a3b8;
+}
+
+.motion-status {
+  color: var(--marigold);
+  font-weight: 700;
+  transition: color 0.2s ease;
 }

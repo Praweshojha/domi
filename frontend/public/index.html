@@ -16,6 +16,15 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Continuous Ambient Background Video -->
+  <div class="bg-video-container" aria-hidden="true">
+    <video id="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="video/bg_loop.mp4" type="video/mp4">
+    </video>
+    <div class="bg-video-scrim"></div>
+    <div class="bg-video-grid"></div>
+  </div>
+
   <div class="topline"></div>
 
   <!-- Futuristic Satellite Telemetry Stream -->
@@ -220,5 +229,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Ambient Video Motion Toggle Pill -->
+  <button id="video-motion-toggle" class="motion-toggle-pill" aria-label="Toggle background motion" title="Toggle background video motion">
+    <span class="motion-indicator-pulse"></span>
+    <span class="motion-label"><span class="motion-status">LIVE STREAM</span> // BG MOTION</span>
+  </button>
 </body>
 </html>

@@ -58,3 +58,42 @@ if (heroSection && globeWrapper) {
     globeWrapper.style.transition = 'none';
   });
 }
+
+// Background Ambient Video Controller
+const bgVideo = document.getElementById('bg-video');
+const motionToggle = document.getElementById('video-motion-toggle');
+
+if (bgVideo && motionToggle) {
+  const statusSpan = motionToggle.querySelector('.motion-status');
+
+  const startAutoplay = () => {
+    bgVideo.muted = true;
+    const playPromise = bgVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        motionToggle.classList.add('paused');
+        if (statusSpan) statusSpan.textContent = 'PAUSED';
+      });
+    }
+  };
+
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    bgVideo.pause();
+    motionToggle.classList.add('paused');
+    if (statusSpan) statusSpan.textContent = 'PAUSED';
+  } else {
+    startAutoplay();
+  }
+
+  motionToggle.addEventListener('click', () => {
+    if (bgVideo.paused) {
+      bgVideo.play();
+      motionToggle.classList.remove('paused');
+      if (statusSpan) statusSpan.textContent = 'LIVE STREAM';
+    } else {
+      bgVideo.pause();
+      motionToggle.classList.add('paused');
+      if (statusSpan) statusSpan.textContent = 'PAUSED';
+    }
+  });
+}
