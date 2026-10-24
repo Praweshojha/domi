@@ -124,3 +124,100 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'Intersect
     el.classList.add('is-revealed');
   });
 }
+
+// 1-Click Email Copy Handler
+const copyEmailBtn = document.getElementById('copy-email-btn');
+const copyEmailText = document.getElementById('copy-email-text');
+
+if (copyEmailBtn && copyEmailText) {
+  copyEmailBtn.addEventListener('click', async () => {
+    const email = 'ojhaprawesh@gmail.com';
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = email;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      copyEmailText.textContent = 'copied to clipboard! ✓';
+      copyEmailBtn.classList.add('is-copied');
+      setTimeout(() => {
+        copyEmailText.textContent = 'copy email';
+        copyEmailBtn.classList.remove('is-copied');
+      }, 2500);
+    } catch (err) {
+      copyEmailText.textContent = 'ojhaprawesh@gmail.com';
+    }
+  });
+}
+
+// Direct Message Contact Form (Cloudflare Pages API: /api/contact)
+const contactForm = document.getElementById('contact-form');
+const contactStatus = document.getElementById('contact-status');
+const contactSubmitBtn = document.getElementById('contact-submit-btn');
+
+if (contactForm && contactStatus && contactSubmitBtn) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    contactStatus.className = 'form-status mono';
+    contactStatus.textContent = '';
+
+    const nameInput = document.getElementById('contact-name');
+    const emailInput = document.getElementById('contact-email');
+    const messageInput = document.getElementById('contact-message');
+
+    const name = (nameInput ? nameInput.value : '').trim();
+    const email = (emailInput ? emailInput.value : '').trim();
+    const message = (messageInput ? messageInput.value : '').trim();
+
+    if (!name || !email || !message) {
+      contactStatus.className = 'form-status mono is-error';
+      contactStatus.textContent = 'Please fill in all fields (name, email, and message).';
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    if (!emailRegex.test(email)) {
+      contactStatus.className = 'form-status mono is-error';
+      contactStatus.textContent = 'Please provide a valid email address.';
+      return;
+    }
+
+    contactSubmitBtn.disabled = true;
+    const originalBtnText = contactSubmitBtn.innerHTML;
+    contactSubmitBtn.innerHTML = '<span>sending message...</span>';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (response.ok && result.success) {
+        contactStatus.className = 'form-status mono is-success';
+        contactStatus.textContent = result.message || 'Thank you! Your message has been received successfully.';
+        contactForm.reset();
+      } else {
+        contactStatus.className = 'form-status mono is-error';
+        contactStatus.textContent = result.message || 'Unable to send message right now. Please email directly at ojhaprawesh@gmail.com.';
+      }
+    } catch (err) {
+      contactStatus.className = 'form-status mono is-error';
+      contactStatus.textContent = 'Network error. Please email directly at ojhaprawesh@gmail.com.';
+    } finally {
+      contactSubmitBtn.disabled = false;
+      contactSubmitBtn.innerHTML = originalBtnText;
+    }
+  });
+}

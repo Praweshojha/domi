@@ -442,27 +442,57 @@
           <p class="contact-lead">I’m interested in internships, research opportunities, geospatial projects, and collaborations where technology can make a practical difference.</p>
           <div class="contact-actions">
             <a class="btn-survey btn-primary" href="mailto:ojhaprawesh@gmail.com">email me ↗</a>
+            <button class="btn-survey btn-secondary" id="copy-email-btn" type="button" aria-label="Copy email address to clipboard">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copy-email-text">copy email</span>
+            </button>
             <a class="btn-survey btn-secondary" href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">view github ↗</a>
           </div>
         </div>
 
-        <!-- Ruled Title-Block Grid of Ruled Cells -->
-        <div class="contact-titleblock-grid" id="social-links-container">
-          <a class="tb-card" href="https://www.linkedin.com/in/prawesh-ojha-784a24263/" target="_blank" rel="noopener noreferrer">
-            <div class="tb-tag mono">field 01 · linkedin</div>
-            <div class="tb-val-serif">Prawesh Ojha ↗</div>
-          </a>
-          <a class="tb-card" href="mailto:ojhaprawesh@gmail.com" id="gmail-link">
-            <div class="tb-tag mono">field 02 · direct email</div>
-            <div class="tb-val-serif">ojhaprawesh@gmail.com ↗</div>
-          </a>
-          <a class="tb-card" href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">
-            <div class="tb-tag mono">field 03 · github repos</div>
-            <div class="tb-val-serif">Praweshojha ↗</div>
-          </a>
-          <div class="tb-card tb-info">
-            <div class="tb-tag mono">field 04 · based in</div>
-            <div class="tb-val-serif">Dhulikhel, Nepal</div>
+        <!-- Contact Layout: Direct Message Form & Title-Block Grid -->
+        <div class="contact-body-grid">
+          <!-- Direct Message Transmission Form -->
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-title mono">transmission / direct message form</div>
+            <div class="form-group">
+              <label for="contact-name" class="mono form-label">01 / your name</label>
+              <input type="text" id="contact-name" name="name" required maxlength="100" placeholder="e.g. Maya Sharma" autocomplete="name" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="contact-email" class="mono form-label">02 / email address</label>
+              <input type="email" id="contact-email" name="email" required maxlength="254" placeholder="e.g. maya@example.com" autocomplete="email" class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="contact-message" class="mono form-label">03 / inquiry or message</label>
+              <textarea id="contact-message" name="message" required maxlength="3000" rows="4" placeholder="Write your message, project idea, or collaboration proposal..." class="form-input form-textarea"></textarea>
+            </div>
+            <button type="submit" id="contact-submit-btn" class="btn-survey btn-primary form-submit">
+              <span>send message ↗</span>
+            </button>
+            <div id="contact-status" class="form-status mono" role="status" aria-live="polite"></div>
+          </form>
+
+          <!-- Ruled Title-Block Grid of Ruled Cells -->
+          <div class="contact-titleblock-grid" id="social-links-container">
+            <a class="tb-card" href="https://www.linkedin.com/in/prawesh-ojha-784a24263/" target="_blank" rel="noopener noreferrer">
+              <div class="tb-tag mono">field 01 · linkedin</div>
+              <div class="tb-val-serif">Prawesh Ojha ↗</div>
+            </a>
+            <a class="tb-card tb-email-card" href="mailto:ojhaprawesh@gmail.com" id="gmail-link">
+              <div class="tb-tag mono">field 02 · direct email</div>
+              <div class="tb-val-serif">ojhaprawesh@gmail.com ↗</div>
+              <span class="tb-sub mono">click to compose in mail app</span>
+            </a>
+            <a class="tb-card" href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">
+              <div class="tb-tag mono">field 03 · github repos</div>
+              <div class="tb-val-serif">Praweshojha ↗</div>
+            </a>
+            <div class="tb-card tb-info">
+              <div class="tb-tag mono">field 04 · based in</div>
+              <div class="tb-val-serif">Dhulikhel, Nepal</div>
+              <span class="tb-sub mono">27.62°N 85.54°E · ku</span>
+            </div>
           </div>
         </div>
       </div>
