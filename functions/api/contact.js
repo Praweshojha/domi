@@ -2,9 +2,14 @@
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
-const sanitizeString = (str) => {
+const sanitizeString = (str, maxLen = 3000) => {
     if (typeof str !== 'string') return '';
-    return str.replace(/[\x00-\x1F\x7F]/g, '').trim();
+    let clean = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim().slice(0, maxLen);
+    // Defend against CSV / Google Sheets Formula Injection (=, +, -, @, \t, \r)
+    if (/^[=+\-@\t\r]/.test(clean)) {
+        clean = "'" + clean;
+    }
+    return clean;
 };
 
 export async function onRequestPost(context) {

@@ -174,32 +174,65 @@ const contactForm = document.getElementById('contact-form');
 const contactStatus = document.getElementById('contact-status');
 const contactSubmitBtn = document.getElementById('contact-submit-btn');
 
+// Security Sanitizer: Defends against XSS, Control Characters & Spreadsheet Formula Injection
+const sanitizeField = (str, maxLen = 3000) => {
+  if (typeof str !== 'string') return '';
+  // Strip control characters & null bytes
+  let clean = str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim().slice(0, maxLen);
+  // Defend against CSV / Google Sheets Formula Injection (=, +, -, @, \t, \r)
+  if (/^[=+\-@\t\r]/.test(clean)) {
+    clean = "'" + clean;
+  }
+  return clean;
+};
+
 if (contactForm && contactStatus && contactSubmitBtn) {
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     contactStatus.className = 'form-status mono';
     contactStatus.textContent = '';
 
-    const nameInput = document.getElementById('contact-name');
-    const emailInput = document.getElementById('contact-email');
-    const messageInput = document.getElementById('contact-message');
+    // 1. Anti-Spam Honeypot Check (Silently drop automated bot attacks)
+    const honeypot = (document.getElementById('contact-website')?.value || '').trim();
+    if (honeypot) {
+      contactStatus.className = 'form-status mono is-success';
+      contactStatus.textContent = 'Thank you! Your message has been received.';
+      contactForm.reset();
+      return;
+    }
 
-    const name = (nameInput ? nameInput.value : '').trim();
-    const email = (emailInput ? emailInput.value : '').trim();
-    const message = (messageInput ? messageInput.value : '').trim();
+    // 2. Client-Side Rate Limiting (45-second submission cooldown)
+    const LAST_SUBMIT_KEY = 'po_contact_last_submit';
+    const COOLDOWN_MS = 45000;
+    const lastSubmitTime = sessionStorage.getItem(LAST_SUBMIT_KEY);
+    if (lastSubmitTime && (Date.now() - parseInt(lastSubmitTime, 10)) < COOLDOWN_MS) {
+      const remainingSec = Math.ceil((COOLDOWN_MS - (Date.now() - parseInt(lastSubmitTime, 10))) / 1000);
+      contactStatus.className = 'form-status mono is-error';
+      contactStatus.textContent = `Please wait ${remainingSec} seconds before sending another message.`;
+      return;
+    }
 
-    if (!name || !email || !message) {
+    const rawName = (document.getElementById('contact-name')?.value || '').trim();
+    const rawEmail = (document.getElementById('contact-email')?.value || '').trim();
+    const rawMessage = (document.getElementById('contact-message')?.value || '').trim();
+
+    if (!rawName || !rawEmail || !rawMessage) {
       contactStatus.className = 'form-status mono is-error';
       contactStatus.textContent = 'Please fill in all fields (name, email, and message).';
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(rawEmail) || rawEmail.length > 254) {
       contactStatus.className = 'form-status mono is-error';
       contactStatus.textContent = 'Please provide a valid email address.';
       return;
     }
+
+    // Sanitize values
+    const name = sanitizeField(rawName, 100);
+    const email = rawEmail.toLowerCase().slice(0, 254);
+    const message = sanitizeField(rawMessage, 3000);
 
     contactSubmitBtn.disabled = true;
     const originalBtnText = contactSubmitBtn.innerHTML;
@@ -245,6 +278,7 @@ if (contactForm && contactStatus && contactSubmitBtn) {
       }
 
       if (isSuccess) {
+        sessionStorage.setItem(LAST_SUBMIT_KEY, Date.now().toString());
         contactStatus.className = 'form-status mono is-success';
         contactStatus.textContent = successMessage;
         contactForm.reset();
@@ -252,13 +286,13 @@ if (contactForm && contactStatus && contactSubmitBtn) {
         // Fallback to mail client if all network requests fail
         const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
         contactStatus.className = 'form-status mono is-success';
-        contactStatus.innerHTML = `Your message is ready! Opening your email client to send to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here if it didn't open automatically</a>)`;
+        contactStatus.textContent = 'Opening your email client to send to ojhaprawesh@gmail.com...';
         window.location.href = mailtoUrl;
       }
     } catch (err) {
       const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
       contactStatus.className = 'form-status mono is-success';
-      contactStatus.innerHTML = `Opening your email client to dispatch to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here</a>)`;
+      contactStatus.textContent = 'Opening your email client to dispatch to ojhaprawesh@gmail.com...';
       window.location.href = mailtoUrl;
     } finally {
       contactSubmitBtn.disabled = false;
