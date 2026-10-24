@@ -12,11 +12,11 @@
   <title>Prawesh Ojha | Geomatics × AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Continuous Ambient Background Video -->
+  <!-- Continuous Ambient Background Video (Preserved untouched) -->
   <div class="bg-video-container" aria-hidden="true">
     <video id="bg-video" autoplay muted loop playsinline preload="auto">
       <source src="video/bg_loop.mp4" type="video/mp4">
@@ -27,79 +27,96 @@
 
   <div class="topline"></div>
 
-  <!-- Futuristic Satellite Telemetry Stream -->
+  <!-- Micro Telemetry Stream -->
   <div class="telemetry-bar" aria-hidden="true">
     <div class="telemetry-track">
-      <div class="telemetry-item"><span class="t-pulse"></span><strong>LIVE TELEMETRY</strong> // DHULIKHEL HQ</div>
+      <div class="telemetry-item"><span class="t-pulse"></span><strong>BASED IN DHULIKHEL</strong></div>
       <div class="telemetry-item"><span class="t-tag">GPS</span> 27.6195° N, 85.5385° E</div>
       <div class="telemetry-item"><span class="t-tag">ELEV</span> 1,550M AMSL</div>
       <div class="telemetry-item"><span class="t-tag">DATUM</span> WGS84 · UTM ZONE 45N</div>
       <div class="telemetry-item"><span class="t-tag">SATELLITE</span> SENTINEL-2 / LANDSAT-9 IN VIEW</div>
       <div class="telemetry-item"><span class="t-tag">GEO-AI</span> INFERENCE ENGINE READY</div>
-      <div class="telemetry-item"><span class="t-tag">STATUS</span> ALL SYSTEMS NOMINAL</div>
+      <div class="telemetry-item"><span class="t-tag">STATUS</span> OPEN TO OPPORTUNITIES</div>
       <!-- Duplicate for infinite marquee wrap -->
-      <div class="telemetry-item"><span class="t-pulse"></span><strong>LIVE TELEMETRY</strong> // DHULIKHEL HQ</div>
+      <div class="telemetry-item"><span class="t-pulse"></span><strong>BASED IN DHULIKHEL</strong></div>
       <div class="telemetry-item"><span class="t-tag">GPS</span> 27.6195° N, 85.5385° E</div>
       <div class="telemetry-item"><span class="t-tag">ELEV</span> 1,550M AMSL</div>
       <div class="telemetry-item"><span class="t-tag">DATUM</span> WGS84 · UTM ZONE 45N</div>
       <div class="telemetry-item"><span class="t-tag">SATELLITE</span> SENTINEL-2 / LANDSAT-9 IN VIEW</div>
       <div class="telemetry-item"><span class="t-tag">GEO-AI</span> INFERENCE ENGINE READY</div>
-      <div class="telemetry-item"><span class="t-tag">STATUS</span> ALL SYSTEMS NOMINAL</div>
+      <div class="telemetry-item"><span class="t-tag">STATUS</span> OPEN TO OPPORTUNITIES</div>
     </div>
   </div>
 
-  <header class="nav wrap">
-    <a class="brand" href="#home" aria-label="Prawesh Ojha home"><span class="brand-mark">P<span>.</span></span><span>PRAWESH OJHA</span></a>
-    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#about">About</a><a href="#work">Projects</a><a href="#journey">Journey</a><a href="#contact" class="nav-cta">Let's connect <span>↗</span></a>
-    </nav>
+  <header class="nav-header">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#home" aria-label="Prawesh Ojha home">
+        <span class="brand-mark">P</span>
+        <span class="brand-name">PRAWESH OJHA</span>
+      </a>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#work">Projects</a>
+        <a href="#journey">Journey</a>
+        <a href="#contact" class="nav-cta">Let's connect <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="hero wrap" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="pulse"></span> GEOMATICS ENGINEERING · NEPAL</p>
-        <h1>Mapping the world.<br><span class="gradient-text">Building what’s next.</span></h1>
-        <p class="hero-lead">I’m Prawesh Ojha — a Geomatics Engineering student exploring the intersection of <strong>geospatial technology, AI, and real-world problem solving.</strong></p>
-        <div class="hero-actions">
-          <a class="button primary" href="#work">Explore my work <span>↘</span></a>
-          <a class="button secondary" href="#contact">Get in touch</a>
+    <section class="hero-section" id="home">
+      <div class="hero-scrim-overlay" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal-on-scroll">
+          <p class="eyebrow"><span class="pulse"></span> GEOMATICS ENGINEERING · NEPAL</p>
+          <h1>Mapping the world.<br><span class="highlight-text">Building what’s next.</span></h1>
+          <p class="hero-lead">I’m Prawesh Ojha — a Geomatics Engineering student exploring the intersection of <strong>geospatial technology, AI, and real-world problem solving.</strong></p>
+          <div class="status-pill-wrap">
+            <span class="status-badge"><i class="dot green"></i> Open to internships & collaboration</span>
+          </div>
+          <div class="hero-actions">
+            <a class="button primary" href="#work">Explore my work <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10"/><path d="M17 7v10H7"/></svg></a>
+            <a class="button secondary" href="#contact">Get in touch</a>
+          </div>
+          <div class="hero-index-pill mono">01 / A FIELD OF POSSIBILITIES</div>
         </div>
-        <div class="hero-meta"><span><i class="dot green"></i> Open to internships & collaboration</span><span class="mono">DHULIKHEL, NEPAL</span></div>
+
+        <div class="hero-art reveal-on-scroll" aria-label="3D Interactive Earth globe illustration">
+          <div class="art-glow"></div>
+          <div class="globe-wrapper" id="globe-container">
+            <!-- Clean Globe Edge Coordinate Tag -->
+            <div class="globe-edge-tag mono">LAT 27°37'N · LON 85°32'E</div>
+
+            <!-- Real 3D Practical Earth Globe -->
+            <canvas id="earth-canvas" class="cobe-canvas" width="1000" height="1000" aria-label="Real 3D Earth Globe with NASA satellite map and real Nepal coordinates"></canvas>
+            <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
+
+            <!-- Active Nepal Pin Pill centered below globe -->
+            <div class="nepal-hud-pill">
+              <span class="hud-live-dot"></span>
+              <span>📍 NEPAL · DHULIKHEL [27.62°N, 85.54°E]</span>
+            </div>
+          </div>
+
+          <div class="hero-badges-dock">
+            <div class="floating-card card-one">
+              <span class="mini-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-8.58 3.91a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17.5-8.58 3.91a2 2 0 0 1-1.66 0L2 17.5"/></svg>
+              </span>
+              <div><b>Spatial thinking</b><small>From data to decisions</small></div>
+            </div>
+            <div class="floating-card card-two">
+              <span class="mini-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+              </span>
+              <div><b>Geospatial AI</b><small>Technology with purpose</small></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hero-art" aria-label="Abstract geospatial map illustration">
-        <div class="art-glow"></div>
-        <div class="globe-wrapper" id="globe-container">
-          <!-- Concentric Holographic Orbital Rings -->
-          <div class="orbit-ring ring-outer">
-            <div class="satellite-node"><span class="sat-dot"></span>SENTINEL-2</div>
-          </div>
-          <div class="orbit-ring ring-mid"></div>
-          <div class="orbit-ring ring-inner"></div>
-
-          <!-- HUD Crosshair Coordinates -->
-          <div class="hud-crosshair">
-            <div class="cross-top-right">LAT 27°37'N</div>
-            <div class="cross-bottom-left">LON 85°32'E</div>
-          </div>
-
-          <!-- Active Telemetry Badge for Nepal -->
-          <div class="nepal-hud-pill">
-            <span class="hud-live-dot"></span>
-            <span>📍 NEPAL · DHULIKHEL [27.62°N, 85.54°E]</span>
-          </div>
-
-          <!-- Real 3D Practical Earth Globe -->
-          <canvas id="earth-canvas" class="cobe-canvas" width="1000" height="1000" aria-label="Real 3D Earth Globe with NASA satellite map and real Nepal coordinates"></canvas>
-          <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
-        </div>
-        <div class="hero-badges-dock">
-          <div class="floating-card card-one"><span class="mini-icon">⌖</span><div><b>Spatial thinking</b><small>From data to decisions</small></div></div>
-          <div class="floating-card card-two"><span class="mini-icon purple">⌘</span><div><b>Geospatial AI</b><small>Technology with purpose</small></div></div>
-        </div>
-      </div>
-      <div class="hero-index mono">01 / A FIELD OF POSSIBILITIES</div>
     </section>
 
     <section class="proof-strip">
@@ -112,14 +129,16 @@
     </section>
 
     <section class="section wrap" id="about">
-      <div class="section-kicker"><span>01</span> / ABOUT ME</div>
-      <div class="about-grid">
-        <div><h2>Curious by nature.<br><span class="muted">Driven to build.</span></h2></div>
-        <div class="about-text">
-          <p class="large-copy">I’m studying how we measure, understand, and improve the world through location-based data.</p>
-          <p>My interests sit where geomatics meets software and intelligent systems: using GIS, remote sensing, spatial analysis, and AI to turn complex information into useful tools. I’m especially interested in disaster resilience, safer mobility, and evidence-led decisions for Nepal’s challenging landscapes.</p>
-          <p>I enjoy learning by building — testing ideas, working through technical problems, and collaborating with people who want to make something meaningful.</p>
-          <div class="interest-tags"><span>Geospatial AI</span><span>GIS & Remote Sensing</span><span>Disaster Resilience</span><span>Spatial Data Science</span><span>WebGIS</span></div>
+      <div class="glass-panel about-panel reveal-on-scroll">
+        <div class="section-kicker"><span>01</span> / ABOUT ME</div>
+        <div class="about-grid">
+          <div><h2>Curious by nature.<br><span class="highlight-text">Driven to build.</span></h2></div>
+          <div class="about-text">
+            <p class="large-copy">I’m studying how we measure, understand, and improve the world through location-based data.</p>
+            <p>My interests sit where geomatics meets software and intelligent systems: using GIS, remote sensing, spatial analysis, and AI to turn complex information into useful tools. I’m especially interested in disaster resilience, safer mobility, and evidence-led decisions for Nepal’s challenging landscapes.</p>
+            <p>I enjoy learning by building — testing ideas, working through technical problems, and collaborating with people who want to make something meaningful.</p>
+            <div class="interest-tags"><span>Geospatial AI</span><span>GIS & Remote Sensing</span><span>Disaster Resilience</span><span>Spatial Data Science</span><span>WebGIS</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -127,102 +146,217 @@
     <section class="section work-section" id="work">
       <div class="wrap">
         <div class="section-kicker"><span>02</span> / SELECTED WORK</div>
-        <div class="section-heading"><h2>Ideas with <span class="gradient-text">real-world purpose.</span></h2><p>A selection of project directions and technical work across geospatial analysis, routing, and risk-informed decision-making.</p></div>
+        <div class="section-heading">
+          <h2>Ideas with <span class="highlight-text">real-world purpose.</span></h2>
+          <p>A selection of project directions and technical work across geospatial analysis, routing, and risk-informed decision-making.</p>
+        </div>
         <div class="project-grid">
-          <article class="project-card project-feature">
+          <article class="project-card project-feature reveal-on-scroll">
             <div class="project-visual route-visual">
               <div class="radar-sweep"></div>
               <div class="visual-label mono">PROJECT CONCEPT · 01</div>
               <svg viewBox="0 0 640 300" role="img" aria-label="Illustrated safe route across a hazard map">
                 <defs><pattern id="routegrid" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M22 0H0V22" fill="none" stroke="#8291a8" stroke-opacity=".2"/></pattern></defs>
                 <rect width="640" height="300" fill="url(#routegrid)"/>
-                <path d="M0 210 Q90 120 180 170 T360 120 T640 170 L640 300 L0 300Z" fill="rgba(2, 132, 199, 0.12)"/>
+                <path d="M0 210 Q90 120 180 170 T360 120 T640 170 L640 300 L0 300Z" fill="rgba(3, 105, 161, 0.10)"/>
                 <path d="M0 80 Q100 140 190 75 T380 85 T640 45" fill="none" stroke="#64748b" stroke-width="24" opacity=".2"/>
                 <path d="M0 80 Q100 140 190 75 T380 85 T640 45" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5 7"/>
                 <path d="M80 250 C135 210 165 230 210 190 S300 165 335 130 S420 115 465 145 S545 210 570 80" fill="none" stroke="#f59e0b" stroke-width="34" opacity=".14"/>
                 <path d="M80 250 C135 210 165 230 210 190 S300 165 335 130 S420 115 465 145 S545 210 570 80" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 6"/>
-                <path d="M80 250 C135 220 160 245 210 220 S295 230 340 195 S420 205 470 165 S530 125 570 80" fill="none" stroke="#0ea5e9" stroke-width="5" stroke-linecap="round"/>
-                <circle cx="80" cy="250" r="8" fill="#0ea5e9" stroke="#ffffff" stroke-width="3"/><circle cx="570" cy="80" r="8" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
-                <g fill="#090d16" font-family="DM Mono, monospace" font-size="11" font-weight="700"><text x="52" y="276">START</text><text x="535" y="60">SAFE ZONE</text><text x="355" y="257" fill="#0284c7">RISK-AWARE ROUTE</text></g>
+                <path d="M80 250 C135 220 160 245 210 220 S295 230 340 195 S420 205 470 165 S530 125 570 80" fill="none" stroke="#0284c7" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="80" cy="250" r="8" fill="#0284c7" stroke="#ffffff" stroke-width="3"/><circle cx="570" cy="80" r="8" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+                <g fill="#0B1220" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700"><text x="52" y="276">START</text><text x="535" y="60">SAFE ZONE</text><text x="355" y="257" fill="#0369A1">RISK-AWARE ROUTE</text></g>
               </svg>
             </div>
-            <div class="project-body"><div class="project-meta"><span>GIS · ROUTING · MCDM</span><span class="status">IN DEVELOPMENT</span></div><h3><a href="https://github.com/Praweshojha/SafeRouteNepal" target="_blank" rel="noopener noreferrer" style="text-decoration:none; color:inherit;">ResQ AI / SafeRoute ↗</a></h3><p>A risk-aware emergency routing concept combining road-network data with terrain and hazard information to explore safer routes during emergencies in Nepal.</p><div class="tech-tags"><span>OpenStreetMap</span><span>OSRM</span><span>DEM</span><span>Multi-criteria analysis</span></div></div>
+            <div class="project-body">
+              <div class="project-meta"><span>GIS · ROUTING · MCDM</span><span class="status status-dev">IN DEVELOPMENT</span></div>
+              <h3><a href="https://github.com/Praweshojha/SafeRouteNepal" target="_blank" rel="noopener noreferrer">ResQ AI / SafeRoute <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a></h3>
+              <p>A risk-aware emergency routing concept combining road-network data with terrain and hazard information to explore safer routes during emergencies in Nepal.</p>
+              <div class="tech-tags"><span>OpenStreetMap</span><span>OSRM</span><span>DEM</span><span>Multi-criteria analysis</span></div>
+            </div>
           </article>
-          <article class="project-card">
+
+          <article class="project-card reveal-on-scroll">
             <div class="project-visual flood-visual">
               <div class="visual-label mono">JAVA PROJECT · 02</div>
               <div class="satellite-rings"><span></span><span></span><span></span><b>GEOSPATIAL<br>SYSTEM</b></div>
               <div class="flood-coordinate mono">SURVEYING → ANALYSIS → MAPPING</div>
             </div>
-            <div class="project-body"><div class="project-meta"><span>JAVA · OOP</span><span class="status">COMPLETED</span></div><h3><a href="https://github.com/Praweshojha/GeoSurveyAssistant" target="_blank" rel="noopener noreferrer" style="text-decoration:none; color:inherit;">GeoSurveyAssistant ↗</a></h3><p>A desktop application for geomatics engineering designed to assist with spatial data, surveying workflows, and coordinate system management.</p><div class="tech-tags"><span>Java</span><span>Swing</span><span>Data structures</span></div></div>
+            <div class="project-body">
+              <div class="project-meta"><span>JAVA · OOP</span><span class="status status-done">COMPLETED</span></div>
+              <h3><a href="https://github.com/Praweshojha/GeoSurveyAssistant" target="_blank" rel="noopener noreferrer">GeoSurveyAssistant <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a></h3>
+              <p>A desktop application for geomatics engineering designed to assist with spatial data, surveying workflows, and coordinate system management.</p>
+              <div class="tech-tags"><span>Java</span><span>Swing</span><span>Data structures</span></div>
+            </div>
           </article>
-          <article class="project-card">
+
+          <article class="project-card reveal-on-scroll">
             <div class="project-visual spatial-visual">
               <div class="visual-label mono">PUZZLE GAME · 03</div>
-              <div class="spatial-stack"><div class="layer l1">01&nbsp; LOGIC</div><div class="layer l2">02&nbsp; WORDS</div><div class="layer l3">03&nbsp; PUZZLES</div><div class="stack-pin">⌖</div></div>
+              <div class="spatial-stack"><div class="layer l1">01&nbsp; LOGIC</div><div class="layer l2">02&nbsp; WORDS</div><div class="layer l3">03&nbsp; PUZZLES</div><div class="stack-pin"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg></div></div>
               <div class="spatial-caption mono">JAVA MINI-PROJECT</div>
             </div>
-            <div class="project-body"><div class="project-meta"><span>JAVA · JDBC</span><span class="status">COMPLETED</span></div><h3><a href="https://github.com/Praweshojha/WordQuest" target="_blank" rel="noopener noreferrer" style="text-decoration:none; color:inherit;">WordQuest ↗</a></h3><p>A polished Java desktop word puzzle game featuring 5 unique modes, 3 difficulty levels, real-time scoring, and persistent SQLite leaderboard tracking.</p><div class="tech-tags"><span>Java</span><span>SQLite</span><span>JDBC</span><span>Algorithms</span></div></div>
+            <div class="project-body">
+              <div class="project-meta"><span>JAVA · JDBC</span><span class="status status-done">COMPLETED</span></div>
+              <h3><a href="https://github.com/Praweshojha/WordQuest" target="_blank" rel="noopener noreferrer">WordQuest <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a></h3>
+              <p>A polished Java desktop word puzzle game featuring 5 unique modes, 3 difficulty levels, real-time scoring, and persistent SQLite leaderboard tracking.</p>
+              <div class="tech-tags"><span>Java</span><span>SQLite</span><span>JDBC</span><span>Algorithms</span></div>
+            </div>
           </article>
         </div>
-        <p class="project-note">Project status is stated transparently: concepts and work in progress are not presented as completed products or published research.</p>
+        <p class="project-note mono">Project status is stated transparently: concepts and work in progress are not presented as completed products or published research.</p>
       </div>
     </section>
 
     <section class="section wrap" id="journey">
       <div class="section-kicker"><span>03</span> / JOURNEY & RECOGNITION</div>
-      <div class="section-heading"><h2>Learning, competing, <span class="muted">growing.</span></h2><p>Building experience through engineering, teamwork, competitions, and student leadership.</p></div>
-      <div class="journey-grid">
-        <div class="journey-card"><div class="journey-icon">✳</div><div class="journey-date mono">2026 · COMPETITION</div><h3>AI/ML Competition</h3><p>Awarded first prize for developing an innovative modelling solution in a competitive technical event.</p><span class="journey-chip">1st Prize</span></div>
-        <div class="journey-card"><div class="journey-icon">↗</div><div class="journey-date mono">JUL 2026 · INNOVATION</div><h3>Technical Innovation</h3><p>Recognized for developing and presenting a successful technical solution during a major tech event.</p><span class="journey-chip">Top Achievement</span></div>
-        <div class="journey-card"><div class="journey-icon">◎</div><div class="journey-date mono">2025–26 · LEADERSHIP</div><h3>Student Leadership</h3><p>Elected to an executive role to organize, manage, and coordinate student activities and department events.</p><span class="journey-chip">Coordinator</span></div>
+      <div class="section-heading">
+        <h2>Learning, competing, <span class="muted">growing.</span></h2>
+        <p>Building experience through engineering, teamwork, competitions, and student leadership.</p>
       </div>
-      <div class="education-band"><div class="edu-symbol">KU</div><div><span class="mono edu-label">EDUCATION</span><h3>Kathmandu University</h3><p>Bachelor’s studies in Geomatics Engineering · Dhulikhel, Nepal</p></div><div class="edu-right mono">GEOMATICS<br>ENGINEERING</div></div>
+      <div class="journey-grid">
+        <div class="journey-card reveal-on-scroll">
+          <div class="journey-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div class="journey-date mono">2026 · COMPETITION</div>
+          <h3>AI/ML Competition</h3>
+          <p>Awarded first prize for developing an innovative modelling solution in a competitive technical event.</p>
+          <span class="journey-chip">1st Prize</span>
+        </div>
+        <div class="journey-card reveal-on-scroll">
+          <div class="journey-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          </div>
+          <div class="journey-date mono">JUL 2026 · INNOVATION</div>
+          <h3>Technical Innovation</h3>
+          <p>Recognized for developing and presenting a successful technical solution during a major tech event.</p>
+          <span class="journey-chip">Top Achievement</span>
+        </div>
+        <div class="journey-card reveal-on-scroll">
+          <div class="journey-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="journey-date mono">2025–26 · LEADERSHIP</div>
+          <h3>Student Leadership</h3>
+          <p>Elected to an executive role to organize, manage, and coordinate student activities and department events.</p>
+          <span class="journey-chip">Coordinator</span>
+        </div>
+      </div>
+      <div class="education-band glass-panel reveal-on-scroll">
+        <div class="edu-symbol">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+        </div>
+        <div>
+          <span class="mono edu-label">EDUCATION</span>
+          <h3>Kathmandu University</h3>
+          <p>Bachelor’s studies in Geomatics Engineering · Dhulikhel, Nepal</p>
+        </div>
+        <div class="edu-right mono">GEOMATICS<br>ENGINEERING</div>
+      </div>
     </section>
 
     <section class="section future-section">
-      <div class="wrap future-grid">
-        <div><div class="section-kicker"><span>04</span> / WHAT I’M EXPLORING</div><h2>Big problems need<br><span class="gradient-text">better spatial thinking.</span></h2></div>
-        <div class="future-list">
-          <div><span>01</span><p><b>Geospatial AI</b><small>Turning spatial data into actionable insights.</small></p><span class="future-arrow">↗</span></div>
-          <div><span>02</span><p><b>Disaster risk & resilience</b><small>Supporting safer communities in mountain regions.</small></p><span class="future-arrow">↗</span></div>
-          <div><span>03</span><p><b>Research & Earth observation</b><small>Building a foundation for rigorous, useful research.</small></p><span class="future-arrow">↗</span></div>
-          <div><span>04</span><p><b>WebGIS & decision tools</b><small>Making complex geospatial workflows more accessible.</small></p><span class="future-arrow">↗</span></div>
+      <div class="wrap">
+        <div class="glass-panel future-panel reveal-on-scroll">
+          <div class="future-grid">
+            <div>
+              <div class="section-kicker"><span>04</span> / WHAT I’M EXPLORING</div>
+              <h2>Big problems need<br><span class="highlight-text">better spatial thinking.</span></h2>
+            </div>
+            <div class="future-list">
+              <div>
+                <span>01</span>
+                <p><b>Geospatial AI</b><small>Turning spatial data into actionable insights.</small></p>
+                <svg class="future-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              </div>
+              <div>
+                <span>02</span>
+                <p><b>Disaster risk & resilience</b><small>Supporting safer communities in mountain regions.</small></p>
+                <svg class="future-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              </div>
+              <div>
+                <span>03</span>
+                <p><b>Research & Earth observation</b><small>Building a foundation for rigorous, useful research.</small></p>
+                <svg class="future-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              </div>
+              <div>
+                <span>04</span>
+                <p><b>WebGIS & decision tools</b><small>Making complex geospatial workflows more accessible.</small></p>
+                <svg class="future-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="contact-section" id="contact">
-      <div class="wrap contact-wrap">
-        <div class="section-kicker"><span>05</span> / CONTACT</div>
-        <h2>Have a meaningful problem<br>to solve? <span class="gradient-text">Let’s talk.</span></h2>
-        <p class="contact-lead">I’m interested in internships, research opportunities, geospatial projects, and collaborations where technology can make a practical difference.</p>
-        <div class="contact-actions">
-          <a class="button primary" href="mailto:ojhaprawesh@gmail.com">Email me <span>↗</span></a>
-          <a class="button secondary" href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">View GitHub <span>↗</span></a>
-        </div>
-        <div class="contact-details" id="social-links-container">
-          <a href="https://www.linkedin.com/in/prawesh-ojha-784a24263/" target="_blank" rel="noopener noreferrer"><span class="contact-label">LINKEDIN</span><span>Connect with me ↗</span></a>
-          <a href="https://www.facebook.com/prawesh.ojha.2025" target="_blank" rel="noopener noreferrer"><span class="contact-label">FACEBOOK</span><span>prawesh.ojha.2025 ↗</span></a>
-          <a href="https://www.instagram.com/ojha_prawesh/" target="_blank" rel="noopener noreferrer"><span class="contact-label">INSTAGRAM</span><span>@ojha_prawesh ↗</span></a>
-          <a href="mailto:ojhaprawesh@gmail.com" id="gmail-link"><span class="contact-label">EMAIL</span><span>ojhaprawesh@gmail.com ↗</span></a>
-          <a href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer"><span class="contact-label">GITHUB</span><span>Praweshojha ↗</span></a>
-          <div><span class="contact-label">BASED IN</span><span>Nepal · Open to global collaboration</span></div>
+    <section class="section contact-section" id="contact">
+      <div class="wrap">
+        <div class="glass-panel contact-panel reveal-on-scroll">
+          <div class="contact-wrap">
+            <div class="section-kicker"><span>05</span> / CONTACT</div>
+            <h2>Have a meaningful problem<br>to solve? <span class="highlight-text">Let’s talk.</span></h2>
+            <p class="contact-lead">I’m interested in internships, research opportunities, geospatial projects, and collaborations where technology can make a practical difference.</p>
+            <div class="contact-actions">
+              <a class="button primary" href="mailto:ojhaprawesh@gmail.com">Email me <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>
+              <a class="button secondary" href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">View GitHub <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>
+            </div>
+            <div class="contact-details" id="social-links-container">
+              <a href="https://www.linkedin.com/in/prawesh-ojha-784a24263/" target="_blank" rel="noopener noreferrer">
+                <span class="contact-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg> LINKEDIN</span>
+                <span>Connect with me ↗</span>
+              </a>
+              <a href="mailto:ojhaprawesh@gmail.com" id="gmail-link">
+                <span class="contact-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> EMAIL</span>
+                <span>ojhaprawesh@gmail.com ↗</span>
+              </a>
+              <a href="https://github.com/Praweshojha" target="_blank" rel="noopener noreferrer">
+                <span class="contact-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg> GITHUB</span>
+                <span>Praweshojha ↗</span>
+              </a>
+              <div class="contact-info-card">
+                <span class="contact-label"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg> BASED IN</span>
+                <span>Nepal · Open to global collaboration</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
-  <footer class="footer wrap"><a class="brand" href="#home"><span class="brand-mark">P<span>.</span></span><span>PRAWESH OJHA</span></a><span class="footer-note">Built around curiosity, spatial thinking, and useful technology.</span><a href="#home" class="back-top">BACK TO TOP ↑</a><span class="copyright">© <span id="year"></span> Prawesh Ojha</span></footer>
+
+  <footer class="footer">
+    <div class="wrap footer-wrap">
+      <a class="brand" href="#home">
+        <span class="brand-mark">P</span>
+        <span class="brand-name">PRAWESH OJHA</span>
+      </a>
+      <span class="footer-note">Built around curiosity, spatial thinking, and useful technology.</span>
+      <div class="footer-socials" aria-label="Social links">
+        <a href="https://www.facebook.com/prawesh.ojha.2025" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/ojha_prawesh/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+      </div>
+      <a href="#home" class="back-top" aria-label="Back to top">BACK TO TOP <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></a>
+      <span class="copyright">© <span id="year"></span> Prawesh Ojha</span>
+    </div>
+  </footer>
+
   <script src="js/three.min.js"></script>
   <script src="js/earth_globe.js"></script>
   <script src="js/app.js"></script>
 
+  <!-- Hanging Avatar (Dismissible) -->
   <div id="avatar-drop" class="avatar-drop-wrapper">
     <div class="avatar-swing">
       <div class="rope"></div>
       <div class="avatar-body">
         <div class="speech-bubble" id="greeting-bubble">Hello, nice to meet you! 👋</div>
-        <div class="avatar-emoji" id="avatar-dismiss" title="Click to dismiss">
+        <div class="avatar-emoji" id="avatar-dismiss" title="Click to dismiss" role="button" tabindex="0" aria-label="Dismiss avatar">
           <div class="avatar-photo-frame">
             <img src="img/prawesh_avatar.jpg" alt="Prawesh Ojha" class="avatar-photo" width="86" height="86" loading="eager">
             <span class="avatar-wave-badge" aria-hidden="true">👋</span>
@@ -232,10 +366,10 @@
     </div>
   </div>
 
-  <!-- Ambient Video Motion Toggle Pill -->
-  <button id="video-motion-toggle" class="motion-toggle-pill" aria-label="Toggle background motion" title="Toggle background video motion">
-    <span class="motion-indicator-pulse"></span>
-    <span class="motion-label"><span class="motion-status">LIVE STREAM</span> // BG MOTION</span>
+  <!-- Minimal 40px Video Play/Pause Control Button -->
+  <button id="video-motion-toggle" class="video-control-btn" aria-label="Pause background video" title="Toggle background video motion">
+    <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+    <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
   </button>
 </body>
 </html>

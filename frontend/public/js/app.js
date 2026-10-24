@@ -18,17 +18,33 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
-// Avatar dismiss handler (instant, CSP-compliant, works on any click/touch on the avatar)
-document.addEventListener('click', (e) => {
-  const avatarWrapper = document.getElementById('avatar-drop');
-  if (avatarWrapper && (avatarWrapper.contains(e.target) || e.target.closest('#avatar-drop') || e.target.closest('#avatar-dismiss'))) {
+// Avatar dismiss handler (instant, CSP-compliant, supports click/touch/keyboard)
+const avatarWrapper = document.getElementById('avatar-drop');
+const dismissAvatar = () => {
+  if (avatarWrapper) {
     avatarWrapper.style.display = 'none';
+  }
+};
+
+document.addEventListener('click', (e) => {
+  if (avatarWrapper && (avatarWrapper.contains(e.target) || e.target.closest('#avatar-drop') || e.target.closest('#avatar-dismiss'))) {
+    dismissAvatar();
   }
 });
 
-// Mouse-tracking Spotlight Glow on Cards
+const avatarDismissBtn = document.getElementById('avatar-dismiss');
+if (avatarDismissBtn) {
+  avatarDismissBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      e.preventDefault();
+      dismissAvatar();
+    }
+  });
+}
+
+// Mouse-tracking Spotlight Glow on Glass Cards
 const spotlightElements = document.querySelectorAll(
-  '.project-card, .journey-card, .floating-card, .contact-details > a'
+  '.project-card, .journey-card, .floating-card, .contact-details > a, .glass-panel'
 );
 spotlightElements.forEach(el => {
   el.addEventListener('mousemove', e => {
@@ -40,15 +56,15 @@ spotlightElements.forEach(el => {
   });
 });
 
-// Interactive Parallax on Hero Section
-const heroSection = document.querySelector('.hero');
+// Interactive Subtle Parallax on Hero Globe
+const heroSection = document.querySelector('.hero-section');
 const globeWrapper = document.querySelector('.globe-wrapper');
-if (heroSection && globeWrapper) {
+if (heroSection && globeWrapper && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   heroSection.addEventListener('mousemove', e => {
     const rect = heroSection.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    globeWrapper.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+    globeWrapper.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
   });
   heroSection.addEventListener('mouseleave', () => {
     globeWrapper.style.transform = 'rotateY(0deg) rotateX(0deg)';
@@ -59,13 +75,24 @@ if (heroSection && globeWrapper) {
   });
 }
 
-// Background Ambient Video Controller
+// Background Ambient Video Controller (Round 40px Icon Button)
 const bgVideo = document.getElementById('bg-video');
-const motionToggle = document.getElementById('video-motion-toggle');
+const videoToggleBtn = document.getElementById('video-motion-toggle');
 
-if (bgVideo && motionToggle) {
-  const statusSpan = motionToggle.querySelector('.motion-status');
+if (bgVideo && videoToggleBtn) {
   let userPaused = false;
+
+  const updateBtnState = (isPaused) => {
+    if (isPaused) {
+      videoToggleBtn.classList.add('paused');
+      videoToggleBtn.setAttribute('aria-label', 'Play background video');
+      videoToggleBtn.setAttribute('title', 'Play background video');
+    } else {
+      videoToggleBtn.classList.remove('paused');
+      videoToggleBtn.setAttribute('aria-label', 'Pause background video');
+      videoToggleBtn.setAttribute('title', 'Pause background video');
+    }
+  };
 
   const playVideo = () => {
     bgVideo.muted = true;
@@ -74,11 +101,9 @@ if (bgVideo && motionToggle) {
     const playPromise = bgVideo.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
-        motionToggle.classList.remove('paused');
-        if (statusSpan) statusSpan.textContent = 'LIVE STREAM';
+        updateBtnState(false);
       }).catch(() => {
-        motionToggle.classList.add('paused');
-        if (statusSpan) statusSpan.textContent = 'PAUSED';
+        updateBtnState(true);
       });
     }
   };
@@ -86,13 +111,12 @@ if (bgVideo && motionToggle) {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     userPaused = true;
     bgVideo.pause();
-    motionToggle.classList.add('paused');
-    if (statusSpan) statusSpan.textContent = 'PAUSED';
+    updateBtnState(true);
   } else {
     playVideo();
   }
 
-  // Resume on first user touch/click/scroll if browser blocked initial autoplay
+  // Resume on first user interaction if browser blocked initial autoplay
   const resumeOnInteraction = () => {
     if (bgVideo.paused && !userPaused) {
       playVideo();
@@ -103,7 +127,7 @@ if (bgVideo && motionToggle) {
   });
 
   // Manual toggle button
-  motionToggle.addEventListener('click', (e) => {
+  videoToggleBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (bgVideo.paused) {
       userPaused = false;
@@ -111,8 +135,27 @@ if (bgVideo && motionToggle) {
     } else {
       userPaused = true;
       bgVideo.pause();
-      motionToggle.classList.add('paused');
-      if (statusSpan) statusSpan.textContent = 'PAUSED';
+      updateBtnState(true);
     }
+  });
+}
+
+// Scroll Reveal Animation (Fade up 16px, 500ms, runs once)
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+    revealObserver.observe(el);
+  });
+} else {
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+    el.classList.add('is-revealed');
   });
 }

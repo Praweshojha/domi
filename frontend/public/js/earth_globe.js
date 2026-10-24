@@ -194,10 +194,11 @@
   globeGroup.add(orbitLine);
 
   // 6. DRAG & TOUCH TO ROTATE INTERACTIVITY
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let isDragging = false;
   let previousMousePosition = { x: 0, y: 0 };
-  let autoRotate = true;
-  let autoRotateSpeed = 0.002;
+  let autoRotate = !prefersReducedMotion;
+  let autoRotateSpeed = 0.0009; // Slow rotation: 60s+ per full 360° turn
 
   const canvas = renderer.domElement;
 
@@ -225,10 +226,12 @@
   function onPointerUp() {
     isDragging = false;
     canvas.style.cursor = 'grab';
-    // Resume slow auto-spin after 3 seconds of inactivity
-    setTimeout(() => {
-      autoRotate = true;
-    }, 3000);
+    // Resume slow auto-spin after 3 seconds of inactivity if not reduced-motion
+    if (!prefersReducedMotion) {
+      setTimeout(() => {
+        autoRotate = true;
+      }, 3000);
+    }
   }
 
   canvas.addEventListener('pointerdown', onPointerDown);
@@ -242,28 +245,28 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    // Auto-spin Earth
-    if (autoRotate) {
+    // Auto-spin Earth if allowed
+    if (autoRotate && !prefersReducedMotion) {
       globeGroup.rotation.y += autoRotateSpeed;
+      cloudsMesh.rotation.y += 0.0002;
     }
 
-    // Clouds rotate independently
-    cloudsMesh.rotation.y += 0.0004;
-
     // Pulse radar ring around Nepal
-    ringScale += 0.02;
+    ringScale += 0.015;
     if (ringScale > 2.2) ringScale = 0.8;
     radarRing.scale.set(ringScale, ringScale, 1);
     ringMat.opacity = Math.max(0, 1 - ringScale / 2.2);
 
     // Orbit satellite
-    satAngle += 0.015;
-    satellite.position.set(
-      Math.cos(satAngle) * satOrbitRadius,
-      Math.sin(satAngle) * satOrbitRadius * 0.4,
-      Math.sin(satAngle) * satOrbitRadius
-    );
-    satellite.lookAt(0, 0, 0);
+    if (!prefersReducedMotion) {
+      satAngle += 0.012;
+      satellite.position.set(
+        Math.cos(satAngle) * satOrbitRadius,
+        Math.sin(satAngle) * satOrbitRadius * 0.4,
+        Math.sin(satAngle) * satOrbitRadius
+      );
+      satellite.lookAt(0, 0, 0);
+    }
 
     renderer.render(scene, camera);
   }
@@ -271,8 +274,8 @@
 
   // Resize handler
   window.addEventListener('resize', () => {
-    const newWidth = container.clientWidth || 460;
-    const newHeight = container.clientHeight || 460;
+    const newWidth = container.clientWidth || 400;
+    const newHeight = container.clientHeight || 400;
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(newWidth, newHeight);
