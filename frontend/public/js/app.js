@@ -209,12 +209,17 @@ if (contactForm && contactStatus && contactSubmitBtn) {
         contactStatus.textContent = result.message || 'Thank you! Your message has been received successfully.';
         contactForm.reset();
       } else {
-        contactStatus.className = 'form-status mono is-error';
-        contactStatus.textContent = result.message || 'Unable to send message right now. Please email directly at ojhaprawesh@gmail.com.';
+        // Graceful fail-safe fallback: generate mailto link with prefilled subject & body
+        const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
+        contactStatus.className = 'form-status mono is-success';
+        contactStatus.innerHTML = `Your message is ready! Opening your email client to send to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here if it didn't open automatically</a>)`;
+        window.location.href = mailtoUrl;
       }
     } catch (err) {
-      contactStatus.className = 'form-status mono is-error';
-      contactStatus.textContent = 'Network error. Please email directly at ojhaprawesh@gmail.com.';
+      const mailtoUrl = `mailto:ojhaprawesh@gmail.com?subject=${encodeURIComponent(`Inquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
+      contactStatus.className = 'form-status mono is-success';
+      contactStatus.innerHTML = `Opening your email client to dispatch to <strong>ojhaprawesh@gmail.com</strong>... (<a href="${mailtoUrl}" target="_blank" style="text-decoration:underline;">click here</a>)`;
+      window.location.href = mailtoUrl;
     } finally {
       contactSubmitBtn.disabled = false;
       contactSubmitBtn.innerHTML = originalBtnText;
