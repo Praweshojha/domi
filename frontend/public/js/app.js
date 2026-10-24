@@ -18,13 +18,21 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
-// Avatar Dismiss Handler (Instant, CSP-compliant, click & keyboard)
+// Avatar Dismiss Handler (Instant, CSP-compliant, click, keyboard & 5-second auto-dismiss)
 const avatarWrapper = document.getElementById('avatar-drop');
 const dismissAvatar = () => {
-  if (avatarWrapper) {
-    avatarWrapper.style.display = 'none';
+  if (avatarWrapper && !avatarWrapper.classList.contains('is-hidden')) {
+    avatarWrapper.classList.add('is-hidden');
+    setTimeout(() => {
+      avatarWrapper.style.display = 'none';
+    }, 650);
   }
 };
+
+// Automatically make the hanging avatar disappear after 5 seconds
+setTimeout(() => {
+  dismissAvatar();
+}, 5000);
 
 document.addEventListener('click', (e) => {
   if (avatarWrapper && (avatarWrapper.contains(e.target) || e.target.closest('#avatar-drop') || e.target.closest('#avatar-dismiss'))) {
