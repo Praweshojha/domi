@@ -19,15 +19,15 @@ if (yearEl) {
 }
 
 // Avatar Dismiss Handler (Auto-dismisses with smooth retraction after 5 seconds)
-const avatarWrapper = document.getElementById('avatar-drop');
 let avatarDismissed = false;
 
 const dismissAvatar = () => {
-  if (avatarWrapper && !avatarDismissed) {
+  const avatarEl = document.getElementById('avatar-drop');
+  if (avatarEl && !avatarDismissed) {
     avatarDismissed = true;
-    avatarWrapper.classList.add('is-hidden');
+    avatarEl.classList.add('is-hidden');
     setTimeout(() => {
-      avatarWrapper.style.display = 'none';
+      avatarEl.style.display = 'none';
     }, 950);
   }
 };
@@ -38,7 +38,8 @@ setTimeout(() => {
 }, 5000);
 
 document.addEventListener('click', (e) => {
-  if (avatarWrapper && (avatarWrapper.contains(e.target) || e.target.closest('#avatar-drop') || e.target.closest('#avatar-dismiss'))) {
+  const avatarEl = document.getElementById('avatar-drop');
+  if (avatarEl && (avatarEl.contains(e.target) || e.target.closest('#avatar-drop') || e.target.closest('#avatar-dismiss'))) {
     dismissAvatar();
   }
 });
