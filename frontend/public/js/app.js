@@ -65,12 +65,18 @@ const motionToggle = document.getElementById('video-motion-toggle');
 
 if (bgVideo && motionToggle) {
   const statusSpan = motionToggle.querySelector('.motion-status');
+  let userPaused = false;
 
-  const startAutoplay = () => {
+  const playVideo = () => {
     bgVideo.muted = true;
+    bgVideo.defaultMuted = true;
+    bgVideo.playsInline = true;
     const playPromise = bgVideo.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
+      playPromise.then(() => {
+        motionToggle.classList.remove('paused');
+        if (statusSpan) statusSpan.textContent = 'LIVE STREAM';
+      }).catch(() => {
         motionToggle.classList.add('paused');
         if (statusSpan) statusSpan.textContent = 'PAUSED';
       });
@@ -78,19 +84,32 @@ if (bgVideo && motionToggle) {
   };
 
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    userPaused = true;
     bgVideo.pause();
     motionToggle.classList.add('paused');
     if (statusSpan) statusSpan.textContent = 'PAUSED';
   } else {
-    startAutoplay();
+    playVideo();
   }
 
-  motionToggle.addEventListener('click', () => {
+  // Resume on first user touch/click/scroll if browser blocked initial autoplay
+  const resumeOnInteraction = () => {
+    if (bgVideo.paused && !userPaused) {
+      playVideo();
+    }
+  };
+  ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, resumeOnInteraction, { once: true, passive: true });
+  });
+
+  // Manual toggle button
+  motionToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (bgVideo.paused) {
-      bgVideo.play();
-      motionToggle.classList.remove('paused');
-      if (statusSpan) statusSpan.textContent = 'LIVE STREAM';
+      userPaused = false;
+      playVideo();
     } else {
+      userPaused = true;
       bgVideo.pause();
       motionToggle.classList.add('paused');
       if (statusSpan) statusSpan.textContent = 'PAUSED';
