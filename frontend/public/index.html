@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/leaflet.css">
-  <link rel="stylesheet" href="css/style.css?v=map1">
+  <link rel="stylesheet" href="css/style.css?v=ambient1">
 </head>
 <body>
   <!-- HARD CONSTRAINT 1: Ambient Background Video (Preserved untouched; no scrim, no overlay) -->
@@ -28,7 +28,31 @@
     <canvas id="lidar-canvas" class="lidar-canvas"></canvas>
   </div>
 
-  <!-- Top Ticker Bar: Static 28px ink bar (sand mono text) -->
+    <!-- (1) Slowly drifting SVG Topographic Contour Lines Overlay (Low-opacity subtle ambient) -->
+  <div class="ambient-contours" aria-hidden="true">
+    <svg class="contour-drift-svg" viewBox="0 0 1920 1080" fill="none" preserveAspectRatio="none">
+      <path d="M-80 160 C320 80, 640 260, 1020 160 C1400 60, 1680 240, 2040 180" stroke="rgba(250, 247, 240, 0.45)" stroke-width="1.2" />
+      <path d="M-80 290 C340 200, 660 410, 1080 300 C1460 190, 1720 370, 2040 310" stroke="rgba(250, 247, 240, 0.35)" stroke-width="1" stroke-dasharray="8 6" />
+      <path d="M-80 440 C360 340, 680 560, 1140 450 C1520 330, 1780 520, 2040 460" stroke="rgba(250, 247, 240, 0.4)" stroke-width="1.2" />
+      <path d="M-80 600 C380 500, 700 720, 1200 610 C1580 490, 1820 680, 2040 620" stroke="rgba(250, 247, 240, 0.3)" stroke-width="1" stroke-dasharray="12 8" />
+      <path d="M-80 760 C400 650, 720 870, 1260 760 C1640 640, 1860 830, 2040 770" stroke="rgba(250, 247, 240, 0.4)" stroke-width="1.2" />
+      <path d="M-80 920 C420 810, 740 1020, 1320 910 C1700 790, 1900 980, 2040 920" stroke="rgba(250, 247, 240, 0.35)" stroke-width="1" />
+      <g fill="rgba(250, 247, 240, 0.45)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500">
+        <text x="420" y="220">1350m</text>
+        <text x="1140" y="445">1400m · banepa ridge</text>
+        <text x="760" y="725">1450m</text>
+        <text x="1460" y="605">1500m · dhulikhel crest</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- (2) Floating Sand-Colored Particles (tsParticles Canvas Container) -->
+  <div id="tsparticles" class="ambient-particles" aria-hidden="true"></div>
+
+  <!-- (3) Soft Cursor-Following Glow -->
+  <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
+<!-- Top Ticker Bar: Static 28px ink bar (sand mono text) -->
   <div class="survey-ticker mono" aria-hidden="true">
     <span>based in dhulikhel · 27.62°N 85.54°E · open to opportunities</span>
   </div>
@@ -196,7 +220,66 @@
       </div>
     </section>
 
-    <!-- ABOUT SECTION (Sheet 02/05) -->
+    
+    <!-- (4) Infinite Skills Marquee (Continuous 60fps Geospatial and AI Tech Ticker) -->
+    <div class="skills-marquee-section" aria-label="Geospatial Engineering and AI Technologies">
+      <div class="skills-marquee-track">
+        <div class="skills-marquee-group">
+          <span class="marquee-item"><span class="m-dot"></span>QGIS & GRASS GIS</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Python Geospatial (GeoPandas · Rasterio)</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>PyTorch & Geospatial AI</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Remote Sensing (Sentinel-2 · Landsat)</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>LiDAR Point Cloud Processing</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>UAV Drone Photogrammetry</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Leaflet & Three.js WebGIS</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>PostGIS & Spatial SQL</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>GNSS Geodetic Surveying</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Disaster Resilience Modeling</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Google Earth Engine</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Kathmandu University / Banepa</span>
+          <span class="marquee-sep">/</span>
+        </div>
+        <div class="skills-marquee-group" aria-hidden="true">
+          <span class="marquee-item"><span class="m-dot"></span>QGIS & GRASS GIS</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Python Geospatial (GeoPandas · Rasterio)</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>PyTorch & Geospatial AI</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Remote Sensing (Sentinel-2 · Landsat)</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>LiDAR Point Cloud Processing</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>UAV Drone Photogrammetry</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Leaflet & Three.js WebGIS</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>PostGIS & Spatial SQL</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>GNSS Geodetic Surveying</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Disaster Resilience Modeling</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Google Earth Engine</span>
+          <span class="marquee-sep">/</span>
+          <span class="marquee-item"><span class="m-dot"></span>Kathmandu University / Banepa</span>
+          <span class="marquee-sep">/</span>
+        </div>
+      </div>
+    </div>
+
+<!-- ABOUT SECTION (Sheet 02/05) -->
     <section class="section wrap" id="about">
       <div class="paper-panel about-panel reveal-on-scroll">
         <div class="sheet-label mono">02 / about me</div>
@@ -597,6 +680,8 @@
   <script src="js/tilt.js"></script>
   <script src="js/tech_balls.js"></script>
   <script src="js/workstation.js?v=ws2"></script>
-  <script src="js/app.js?v=sec4"></script>
+    <script src="js/tsparticles.bundle.min.js"></script>
+  <script src="js/ambient_effects.js"></script>
+<script src="js/app.js?v=sec4"></script>
 </body>
 </html>

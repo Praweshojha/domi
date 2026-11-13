@@ -1881,4 +1881,203 @@ summary:focus-visible {
     opacity: 1 !important;
     transform: none !important;
   }
+  .contour-drift-svg {
+    animation: none !important;
+  }
+  .skills-marquee-track {
+    animation: none !important;
+  }
+  .cursor-glow {
+    display: none !important;
+  }
+  .ambient-particles {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   AMBIENT EFFECTS SUITE (Terrain & Geomatics Aesthetic at 60fps)
+   ========================================================================== */
+
+/* 1. Slowly Drifting SVG Topographic Contour Lines Overlay */
+.ambient-contours {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+}
+
+.contour-drift-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: contourDrift 38s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes contourDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-24px, 14px, 0) scale(1.015);
+  }
+  100% {
+    transform: translate3d(18px, -18px, 0) scale(1.008);
+  }
+}
+
+/* 2. Floating Sand-Colored Particles (tsParticles) */
+.ambient-particles {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* 3. Soft Cursor-Following Glow */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 480px;
+  height: 480px;
+  margin-left: -240px;
+  margin-top: -240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(250, 247, 240, 0.085) 0%, rgba(22, 101, 52, 0.038) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  will-change: transform;
+}
+
+/* Magnetic Buttons Spring Transition */
+.btn-survey,
+.nav-signal-btn,
+.menu-toggle,
+.dial-zoom-btn,
+.dial-mode-btn,
+.survey-video-btn {
+  will-change: transform;
+  transition: transform 0.22s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* 4. Infinite Skills Marquee */
+.skills-marquee-section {
+  width: 100%;
+  overflow: hidden;
+  padding: 14px 0;
+  margin: 32px 0 44px 0;
+  background: rgba(250, 247, 240, 0.76);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 6;
+  user-select: none;
+}
+
+.skills-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 34s linear infinite;
+  will-change: transform;
+}
+
+.skills-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.skills-marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 16px;
+  white-space: nowrap;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(240, 234, 219, 0.68);
+  border: 1px solid rgba(20, 38, 28, 0.14);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.marquee-item:hover {
+  background: var(--sand);
+  border-color: var(--forest);
+}
+
+.m-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ochre);
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(22, 101, 52, 0.4);
+}
+
+.marquee-sep {
+  color: var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Enhanced Scroll-Reveal Easing & Staggering */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mobile & Touch Safety: Disable heavy effects on touch devices & narrow screens */
+@media (hover: none), (max-width: 768px) {
+  .cursor-glow {
+    display: none !important;
+  }
+  .ambient-particles {
+    display: none !important;
+  }
+  .ambient-contours {
+    opacity: 0.11;
+  }
+  .contour-drift-svg {
+    animation-duration: 60s;
+  }
 }
