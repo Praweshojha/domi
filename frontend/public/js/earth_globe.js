@@ -271,15 +271,26 @@
   globeGroup.add(orbitLine);
 
   // 9. Initial Orientation: Target Kathmandu University squarely at center
-  // KU vector in sphere coords:
-  // We calculate the exact Euler rotation that places KU directly facing the camera (z-axis)
   const TARGET_ROT_X = 0.26;
   const TARGET_ROT_Y = -Math.PI * 0.472;
 
   globeGroup.rotation.x = TARGET_ROT_X;
   globeGroup.rotation.y = TARGET_ROT_Y;
 
-  // 10. Live HUD Elements
+  // 10. Geodetic State & Animation Variables
+  let isZoomed = false;
+  let isAnimatingTransition = false;
+  let animStartTime = 0;
+  const ANIM_DURATION = 1200; // ms
+
+  let startCamZ = ORBIT_ZOOM;
+  let targetCamZ = ORBIT_ZOOM;
+  let startRotX = TARGET_ROT_X;
+  let targetRotX = TARGET_ROT_X;
+  let startRotY = TARGET_ROT_Y;
+  let targetRotY = TARGET_ROT_Y;
+
+  // 11. Live HUD Elements
   const hudLatLon = document.getElementById('hud-latlon');
   const hudUtm = document.getElementById('hud-utm');
   const hudStatus = document.getElementById('hud-status');
@@ -330,19 +341,7 @@
   }
   canvas.addEventListener('mousemove', onPointerMoveHUD, { passive: true });
 
-  // 12. Cinematic Fly-To Zoom Physics to Kathmandu University
-  let isZoomed = false;
-  let isAnimatingTransition = false;
-  let animStartTime = 0;
-  const ANIM_DURATION = 1200; // ms
-
-  let startCamZ = ORBIT_ZOOM;
-  let targetCamZ = ORBIT_ZOOM;
-  let startRotX = TARGET_ROT_X;
-  let targetRotX = TARGET_ROT_X;
-  let startRotY = TARGET_ROT_Y;
-  let targetRotY = TARGET_ROT_Y;
-
+  // 12. Cinematic Fly-To Zoom Functions
   function flyToKathmanduUniversity() {
     isZoomed = true;
     isAnimatingTransition = true;

@@ -4,11 +4,9 @@
  * Adheres strictly to Terrain Tokens: Sand, Forest, Ochre & Ink
  */
 
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/OrbitControls.js';
-
 (function initWorkstation() {
+  if (typeof THREE === 'undefined' || !THREE.GLTFLoader || !THREE.OrbitControls) return;
+
   const canvas = document.getElementById('workstation-canvas');
   const container = document.getElementById('globe-container');
   if (!canvas || !container) return;
@@ -51,7 +49,7 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
   scene.add(ochreAccent);
 
   // Constrained OrbitControls (exactly like Computers.tsx in template)
-  const controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enablePan = false;
   controls.enableZoom = false;
   controls.enableDamping = true;
@@ -67,7 +65,7 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
   const isMobile = window.innerWidth <= 600;
 
   // Load GLTF Model from local models directory
-  const loader = new GLTFLoader();
+  const loader = new THREE.GLTFLoader();
   loader.load(
     'models/desktop_pc/scene.gltf',
     (gltf) => {

@@ -17,6 +17,20 @@ export default {
     }
 
     // Serve static assets from frontend/public
-    return env.ASSETS.fetch(request);
+    try {
+      const response = await env.ASSETS.fetch(request);
+      if (response && response.status < 400) {
+        return response;
+      }
+      if (url.pathname.includes('favicon')) {
+        return new Response(null, { status: 204 });
+      }
+      return response;
+    } catch (err) {
+      if (url.pathname.includes('favicon')) {
+        return new Response(null, { status: 204 });
+      }
+      return new Response('Not found', { status: 404 });
+    }
   },
 };
