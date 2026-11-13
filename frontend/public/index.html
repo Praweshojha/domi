@@ -21,6 +21,8 @@
     <video id="bg-video" autoplay muted loop playsinline preload="auto">
       <source src="video/bg_loop.mp4" type="video/mp4">
     </video>
+    <!-- Geodetic 3D LiDAR & GNSS Coordinate Lattice (Overlaying video in Forest & Ochre) -->
+    <canvas id="lidar-canvas" class="lidar-canvas"></canvas>
   </div>
 
   <!-- Top Ticker Bar: Static 28px ink bar (sand mono text) -->
@@ -115,22 +117,28 @@
               <div class="dial-crosshair-h" aria-hidden="true"></div>
               <div class="dial-crosshair-v" aria-hidden="true"></div>
 
-              <!-- Globe Container: Three.js Real 3D Earth Canvas -->
+              <!-- Globe & Workstation Container: Three.js Real 3D Canvases -->
               <div class="globe-wrapper" id="globe-container">
                 <canvas id="earth-canvas" class="cobe-canvas" width="1000" height="1000" aria-label="3D Earth globe with real coordinates and drone site model"></canvas>
+                <canvas id="workstation-canvas" class="cobe-canvas is-hidden" width="1000" height="1000" aria-label="3D Survey Workstation Computer Model"></canvas>
                 <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
 
                 <!-- Nepal Surveyor Pin Marker with Gentle Pulsing Ring and banepa label -->
-                <div class="dial-pin-callout mono" aria-hidden="true">
+                <div class="dial-pin-callout mono" id="dial-pin-callout" aria-hidden="true">
                   <span class="pin-marker-pulse"></span>
                   <span class="pin-label">▲ banepa</span>
                 </div>
               </div>
             </div>
 
-            <!-- Under the dial: One small sand caption panel -->
+            <!-- Under the dial: Sand caption with 3D instrument mode switcher -->
             <div class="dial-caption paper-panel mono">
-              fig. 1 · banepa 3d drone model · 27.62°N 85.54°E · wgs84
+              <span class="dial-caption-text" id="dial-mode-text">fig. 1 · banepa 3d drone model · 27.62°N 85.54°E · wgs84</span>
+              <div class="dial-mode-toggle" role="group" aria-label="Instrument 3D View Mode">
+                <button class="dial-mode-btn is-active" id="btn-mode-globe" type="button" title="View 3D Earth Globe">01 globe</button>
+                <span class="dial-mode-sep">/</span>
+                <button class="dial-mode-btn" id="btn-mode-pc" type="button" title="View 3D Survey Workstation">02 workstation</button>
+              </div>
             </div>
           </div>
         </div>
@@ -194,6 +202,17 @@
               <span>disaster resilience</span>
               <span>spatial data science</span>
               <span>webgis</span>
+            </div>
+
+            <!-- 3D Spatial & AI Toolkit (Ported BallCanvas in Terrain Palette) -->
+            <div class="tech-toolkit-block">
+              <div class="toolkit-header">
+                <span class="mono toolkit-sub">instrument toolkit · 3d interactive nodes (drag to inspect)</span>
+                <span class="rubber-stamp">interactive 3d</span>
+              </div>
+              <div class="tech-balls-grid" id="tech-balls-container">
+                <!-- Dynamically populated with 3D faceted polyhedrons by tech_balls.js -->
+              </div>
             </div>
           </div>
         </div>
@@ -551,8 +570,20 @@
     <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
   </button>
 
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./js/three.module.js",
+      "three/addons/": "./js/addons/"
+    }
+  }
+  </script>
   <script src="js/three.min.js"></script>
   <script src="js/earth_globe.js"></script>
+  <script src="js/lidar_points.js"></script>
+  <script src="js/tilt.js"></script>
+  <script src="js/tech_balls.js"></script>
+  <script type="module" src="js/workstation.js"></script>
   <script src="js/app.js?v=sec3"></script>
 </body>
 </html>
