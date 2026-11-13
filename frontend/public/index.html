@@ -123,10 +123,29 @@
                 <canvas id="workstation-canvas" class="cobe-canvas is-hidden" width="1000" height="1000" aria-label="3D Survey Workstation Computer Model"></canvas>
                 <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
 
+                <!-- Real Geodetic Coordinate Telemetry HUD Overlay -->
+                <div class="globe-hud mono" id="globe-hud" aria-live="polite">
+                  <div class="hud-line"><span class="hud-k">CRS</span><span class="hud-v">WGS84 / UTM 45N</span></div>
+                  <div class="hud-line"><span class="hud-k">POS</span><span class="hud-v" id="hud-latlon">27.6195°N 85.5385°E</span></div>
+                  <div class="hud-line"><span class="hud-k">GRID</span><span class="hud-v" id="hud-utm">355840E 3055920N</span></div>
+                  <div class="hud-line"><span class="hud-k">LOCK</span><span class="hud-v hud-status-text" id="hud-status">● KU / BANEPA</span></div>
+                </div>
+
                 <!-- Nepal Surveyor Pin Marker with Gentle Pulsing Ring and banepa label -->
                 <div class="dial-pin-callout mono" id="dial-pin-callout" aria-hidden="true">
                   <span class="pin-marker-pulse"></span>
-                  <span class="pin-label">▲ banepa</span>
+                  <span class="pin-label">▲ banepa / ku</span>
+                </div>
+
+                <!-- Kathmandu University Zoom Callout Badge -->
+                <div class="ku-campus-callout mono is-hidden" id="ku-campus-callout">
+                  <div class="ku-badge-header">
+                    <span class="signal-tri">▲</span>
+                    <strong>kathmandu university</strong>
+                  </div>
+                  <div class="ku-badge-sub">dept. of civil & geomatics eng.</div>
+                  <div class="ku-badge-coords">dhulikhel · 1,510m asl · utm 45n</div>
+                  <button type="button" class="ku-reset-btn mono" id="btn-reset-globe">← reset orbit</button>
                 </div>
               </div>
             </div>

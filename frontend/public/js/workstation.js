@@ -111,6 +111,8 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
   const btnPc = document.getElementById('btn-mode-pc');
   const earthCanvas = document.getElementById('earth-canvas');
   const pinCallout = document.getElementById('dial-pin-callout');
+  const globeHud = document.getElementById('globe-hud');
+  const kuCallout = document.getElementById('ku-campus-callout');
   const captionText = document.getElementById('dial-mode-text');
 
   function setMode(mode) {
@@ -121,6 +123,8 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
       if (canvas) canvas.classList.remove('is-hidden');
       if (earthCanvas) earthCanvas.classList.add('is-hidden');
       if (pinCallout) pinCallout.style.opacity = '0';
+      if (globeHud) globeHud.style.display = 'none';
+      if (kuCallout) kuCallout.classList.add('is-hidden');
       if (captionText) {
         captionText.innerHTML = 'fig. 1b · geospatial 3d workstation · interactive horizontal orbit';
       }
@@ -132,6 +136,7 @@ import { OrbitControls } from 'three/addons/OrbitControls.js';
       if (canvas) canvas.classList.add('is-hidden');
       if (earthCanvas) earthCanvas.classList.remove('is-hidden');
       if (pinCallout) pinCallout.style.opacity = '1';
+      if (globeHud) globeHud.style.display = 'flex';
       if (captionText) {
         captionText.innerHTML = 'fig. 1 · banepa 3d drone model · 27.62°N 85.54°E · wgs84';
       }
