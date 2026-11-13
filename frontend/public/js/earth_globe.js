@@ -303,6 +303,7 @@
 
   if (btnZoomIn) {
     btnZoomIn.addEventListener('click', (e) => {
+      if (window.isRealMapActive && window.isRealMapActive()) return;
       e.stopPropagation();
       autoRotate = false;
       targetCamZ = Math.max(MIN_LOCAL_Z, targetCamZ - 0.32);
@@ -310,6 +311,7 @@
   }
   if (btnZoomOut) {
     btnZoomOut.addEventListener('click', (e) => {
+      if (window.isRealMapActive && window.isRealMapActive()) return;
       e.stopPropagation();
       autoRotate = false;
       targetCamZ = Math.min(MAX_ORBIT_Z, targetCamZ + 0.32);
@@ -317,6 +319,7 @@
   }
   if (btnZoomReset) {
     btnZoomReset.addEventListener('click', (e) => {
+      if (window.isRealMapActive && window.isRealMapActive()) return;
       e.stopPropagation();
       targetCamZ = MAX_ORBIT_Z;
       globeGroup.quaternion.copy(orbitInitialQuat);
@@ -324,9 +327,11 @@
     });
   }
 
-  // 10. Drag & Pan Controls with Adaptive Sensitivity
+  // 10. Drag, Pan & Click-To-Zoom Controls
   let isDragging = false;
   let prevPointerPos = { x: 0, y: 0 };
+  let pointerDownPos = { x: 0, y: 0 };
+  let pointerDownTime = 0;
   let touchStartDist = 0;
 
   function onPointerDown(e) {
@@ -335,6 +340,8 @@
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     prevPointerPos = { x: clientX, y: clientY };
+    pointerDownPos = { x: clientX, y: clientY };
+    pointerDownTime = Date.now();
     canvas.style.cursor = 'grabbing';
 
     if (e.touches && e.touches.length === 2) {
@@ -378,10 +385,29 @@
     prevPointerPos = { x: clientX, y: clientY };
   }
 
-  function onPointerUp() {
+  function onPointerUp(e) {
+    if (!isDragging) return;
     isDragging = false;
     touchStartDist = 0;
     canvas.style.cursor = 'grab';
+
+    const clientX = (e && e.changedTouches) ? e.changedTouches[0].clientX : (e ? e.clientX : prevPointerPos.x);
+    const clientY = (e && e.changedTouches) ? e.changedTouches[0].clientY : (e ? e.clientY : prevPointerPos.y);
+    const dist = Math.hypot(clientX - pointerDownPos.x, clientY - pointerDownPos.y);
+    const elapsed = Date.now() - pointerDownTime;
+
+    // Click detected (minimal drag distance & short duration):
+    // Smoothly fly into Dhulikhel city and transition to real interactive Leaflet map!
+    if (dist < 8 && elapsed < 450) {
+      // Rotate to Nepal center orientation
+      globeGroup.quaternion.copy(orbitInitialQuat);
+      targetCamZ = 1.3;
+      setTimeout(() => {
+        if (typeof window.showDhulikhelMap === 'function') {
+          window.showDhulikhelMap();
+        }
+      }, 200);
+    }
   }
 
   canvas.addEventListener('mousedown', onPointerDown);

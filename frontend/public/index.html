@@ -15,7 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=fixed5s">
+  <link rel="stylesheet" href="css/leaflet.css">
+  <link rel="stylesheet" href="css/style.css?v=map1">
 </head>
 <body>
   <!-- HARD CONSTRAINT 1: Ambient Background Video (Preserved untouched; no scrim, no overlay) -->
@@ -119,34 +120,39 @@
               <div class="dial-crosshair-h" aria-hidden="true"></div>
               <div class="dial-crosshair-v" aria-hidden="true"></div>
 
-              <!-- Globe & Workstation Container: Three.js Real 3D Canvases -->
+              <!-- Globe, Real Slippy Map & Workstation Container: Three.js & Leaflet -->
               <div class="globe-wrapper" id="globe-container">
-                <canvas id="earth-canvas" class="cobe-canvas" width="1000" height="1000" aria-label="3D Earth globe with real coordinates and drone site model"></canvas>
+                <canvas id="earth-canvas" class="cobe-canvas" width="1000" height="1000" aria-label="3D Earth globe with real coordinates and geodetic graticule"></canvas>
+                <div id="interactive-map" class="interactive-map is-hidden" aria-label="Real Interactive Map of Dhulikhel & Kathmandu University"></div>
                 <canvas id="workstation-canvas" class="cobe-canvas is-hidden" width="1000" height="1000" aria-label="3D Survey Workstation Computer Model"></canvas>
                 <noscript><img src="img/hero_globe.jpg" alt="Geomatics Globe" class="hero-globe-img"></noscript>
 
                 <!-- Minimal Zoom Controls on Dial Frame -->
-                <div class="dial-zoom-controls" aria-label="Globe Zoom Controls">
-                  <button type="button" class="dial-zoom-btn" id="btn-zoom-in" title="Zoom in towards Dhulikhel / KU">+</button>
-                  <button type="button" class="dial-zoom-btn" id="btn-zoom-out" title="Zoom out to Earth orbit">−</button>
-                  <button type="button" class="dial-zoom-btn" id="btn-zoom-reset" title="Reset View">⊙</button>
+                <div class="dial-zoom-controls" aria-label="Globe & Map Zoom Controls">
+                  <button type="button" class="dial-zoom-btn" id="btn-zoom-in" title="Zoom in (+)">+</button>
+                  <button type="button" class="dial-zoom-btn" id="btn-zoom-out" title="Zoom out (−)">−</button>
+                  <button type="button" class="dial-zoom-btn" id="btn-zoom-reset" title="Dhulikhel / Reset View">⊙</button>
                 </div>
 
                 <!-- Nepal Surveyor Pin Marker with Gentle Pulsing Ring -->
                 <div class="dial-pin-callout mono" id="dial-pin-callout" aria-hidden="true">
                   <span class="pin-marker-pulse"></span>
-                  <span class="pin-label">▲ dhulikhel / ku</span>
+                  <span class="pin-label">▲ click globe to zoom dhulikhel</span>
                 </div>
               </div>
             </div>
 
-            <!-- Under the dial: Sand caption with 3D instrument mode switcher -->
+            <!-- Under the dial: Sand caption with instrument mode switcher -->
             <div class="dial-caption paper-panel mono">
-              <span class="dial-caption-text" id="dial-mode-text">fig. 1 · 27.6195°N 85.5385°E · dhulikhel & kathmandu university · [scroll to zoom · drag to pan]</span>
-              <div class="dial-mode-toggle" role="group" aria-label="Instrument 3D View Mode">
-                <button class="dial-mode-btn is-active" id="btn-mode-sat" type="button" title="View Satellite Imagery">01 satellite</button>
+              <span class="dial-caption-text" id="dial-mode-text">fig. 1 · 3d geodetic earth globe · [click globe to zoom into dhulikhel map]</span>
+              <div class="dial-mode-toggle" role="group" aria-label="Instrument View Mode">
+                <button class="dial-mode-btn is-active" id="btn-mode-globe" type="button" title="View 3D Earth Globe">01 3d globe</button>
                 <span class="dial-mode-sep">/</span>
-                <button class="dial-mode-btn" id="btn-mode-osm" type="button" title="View Street Map & Names">02 street map</button>
+                <button class="dial-mode-btn" id="btn-mode-map" type="button" title="View Real Interactive Map of Dhulikhel & KU">02 dhulikhel map</button>
+                <span class="dial-mode-sep">/</span>
+                <button class="dial-mode-btn" id="btn-layer-sat" type="button" title="Toggle Satellite Layer">satellite</button>
+                <span class="dial-mode-sep">/</span>
+                <button class="dial-mode-btn" id="btn-layer-osm" type="button" title="Toggle Streets Layer">streets</button>
                 <span class="dial-mode-sep">/</span>
                 <button class="dial-mode-btn" id="btn-mode-pc" type="button" title="View 3D Survey Workstation">03 workstation</button>
               </div>
@@ -584,7 +590,9 @@
   <script src="js/three.min.js"></script>
   <script src="js/OrbitControls.js"></script>
   <script src="js/GLTFLoader.js"></script>
-  <script src="js/earth_globe.js?v=ku2"></script>
+  <script src="js/leaflet.js"></script>
+  <script src="js/real_map.js?v=ku4"></script>
+  <script src="js/earth_globe.js?v=ku4"></script>
   <script src="js/lidar_points.js"></script>
   <script src="js/tilt.js"></script>
   <script src="js/tech_balls.js"></script>

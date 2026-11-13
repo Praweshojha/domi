@@ -105,10 +105,11 @@
   requestAnimationFrame(animate);
 
   // Mode Switcher Controls
-  const btnSat = document.getElementById('btn-mode-sat');
-  const btnOsm = document.getElementById('btn-mode-osm');
+  const btnGlobe = document.getElementById('btn-mode-globe');
+  const btnMap = document.getElementById('btn-mode-map');
   const btnPc = document.getElementById('btn-mode-pc');
   const earthCanvas = document.getElementById('earth-canvas');
+  const interactiveMap = document.getElementById('interactive-map');
   const pinCallout = document.getElementById('dial-pin-callout');
   const zoomControls = document.querySelector('.dial-zoom-controls');
   const captionText = document.getElementById('dial-mode-text');
@@ -116,14 +117,15 @@
   function showPc() {
     isVisible = true;
     if (btnPc) btnPc.classList.add('is-active');
-    if (btnSat) btnSat.classList.remove('is-active');
-    if (btnOsm) btnOsm.classList.remove('is-active');
+    if (btnGlobe) btnGlobe.classList.remove('is-active');
+    if (btnMap) btnMap.classList.remove('is-active');
     if (canvas) canvas.classList.remove('is-hidden');
     if (earthCanvas) earthCanvas.classList.add('is-hidden');
+    if (interactiveMap) interactiveMap.classList.add('is-hidden');
     if (pinCallout) pinCallout.style.opacity = '0';
     if (zoomControls) zoomControls.style.display = 'none';
     if (captionText) {
-      captionText.innerHTML = 'fig. 1c · geospatial 3d workstation · interactive horizontal orbit';
+      captionText.innerHTML = 'fig. 1 · 3d geomatics survey workstation · [drag to rotate terminal]';
     }
     controls.autoRotate = true;
   }
@@ -132,29 +134,17 @@
     isVisible = false;
     if (btnPc) btnPc.classList.remove('is-active');
     if (canvas) canvas.classList.add('is-hidden');
-    if (earthCanvas) earthCanvas.classList.remove('is-hidden');
-    if (pinCallout) pinCallout.style.opacity = '1';
     if (zoomControls) zoomControls.style.display = 'flex';
   }
 
   if (btnPc) {
     btnPc.addEventListener('click', showPc);
   }
-  if (btnSat) {
-    btnSat.addEventListener('click', () => {
-      hidePc();
-      if (btnSat) btnSat.classList.add('is-active');
-      if (btnOsm) btnOsm.classList.remove('is-active');
-      if (window.setGlobeLayer) window.setGlobeLayer('sat');
-    });
+  if (btnGlobe) {
+    btnGlobe.addEventListener('click', hidePc);
   }
-  if (btnOsm) {
-    btnOsm.addEventListener('click', () => {
-      hidePc();
-      if (btnOsm) btnOsm.classList.add('is-active');
-      if (btnSat) btnSat.classList.remove('is-active');
-      if (window.setGlobeLayer) window.setGlobeLayer('osm');
-    });
+  if (btnMap) {
+    btnMap.addEventListener('click', hidePc);
   }
 
   // Responsive Resize
