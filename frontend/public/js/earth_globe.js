@@ -1,11 +1,11 @@
 /**
  * Practical 3D Real Earth Geodetic Instrument powered by Three.js
  * Features:
- *  - Real Geodetic WGS84 & UTM Zone 45N coordinate projection engine
- *  - Default focus on Kathmandu University (KU / Dhulikhel / Banepa: 27.6195°N, 85.5385°E)
- *  - Live cursor raycasting: hover anywhere on Earth to read live Lat/Lon & UTM Easting/Northing
- *  - Cinematic "Fly-To" zoom: click the globe to fly smoothly down into Kathmandu University
- *  - Double-click or [reset orbit] to return to planetary overview
+ *  - Mathematically exact WGS84 & UTM Zone 45N geodetic projection
+ *  - Focal alignment: Kathmandu University (KU / Dhulikhel / Banepa: 27.6195°N, 85.5385°E)
+ *  - Local-level zoom into Dhulikhel showing high-res KU campus orthomosaic & landmarks
+ *  - Live cursor raycasting: hover anywhere on Earth to read live Lat/Lon & UTM coordinates
+ *  - Smooth quaternion slerp fly-to camera physics
  *  - Strictly styled to Terrain Tokens: Forest (#166534), Ochre (#D97706), Ink (#14261C), Sand (#FAF7F0)
  */
 
@@ -18,14 +18,14 @@
   const canvas = document.getElementById('earth-canvas');
   if (!canvas) return;
 
-  // Scene & Camera
+  // Scene & Camera Setup
   const scene = new THREE.Scene();
   let width = container.clientWidth || 420;
   let height = container.clientHeight || 420;
 
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   const ORBIT_ZOOM = 2.8;
-  const KU_ZOOM = 1.28;
+  const LOCAL_KU_ZOOM = 1.16; // Extreme local zoom right over Dhulikhel / KU campus
   camera.position.z = ORBIT_ZOOM;
 
   const renderer = new THREE.WebGLRenderer({
@@ -37,19 +37,19 @@
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-  // Terrain Lighting (Warm Sun, Forest Rim, Ochre Accent — Zero blue)
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+  // Terrain Studio Lighting (Sun, Forest rim, Ochre warm fill)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.98);
   scene.add(ambientLight);
 
-  const sunLight = new THREE.DirectionalLight(0xfffaf0, 1.25);
+  const sunLight = new THREE.DirectionalLight(0xfffaf0, 1.3);
   sunLight.position.set(5, 4, 5);
   scene.add(sunLight);
 
-  const rimLight = new THREE.DirectionalLight(0x166534, 0.55); // --forest rim
+  const rimLight = new THREE.DirectionalLight(0x166534, 0.6); // --forest rim
   rimLight.position.set(-5, -2, -3);
   scene.add(rimLight);
 
-  const ochreLight = new THREE.DirectionalLight(0xd97706, 0.3); // --ochre accent
+  const ochreLight = new THREE.DirectionalLight(0xd97706, 0.35); // --ochre accent
   ochreLight.position.set(2, -4, 2);
   scene.add(ochreLight);
 
@@ -61,7 +61,7 @@
   const KU_LAT = 27.6195;
   const KU_LON = 85.5385;
 
-  // 1. Math: WGS84 Lat/Lon to Sphere Vector3
+  // 1. Math: WGS84 Geodetic Lat/Lon to 3D Sphere Vector
   function latLonToVector3(lat, lon, r) {
     const phi = (90 - lat) * (Math.PI / 180);
     const theta = (lon + 180) * (Math.PI / 180);
@@ -72,7 +72,7 @@
     );
   }
 
-  // 2. Math: Vector3 on sphere to WGS84 Lat/Lon
+  // 2. Math: 3D Vector on Sphere to WGS84 Lat/Lon
   function vector3ToLatLon(v) {
     const p = v.clone().normalize();
     const lat = Math.asin(Math.max(-1, Math.min(1, p.y))) * (180 / Math.PI);
@@ -83,7 +83,7 @@
     return { lat, lon };
   }
 
-  // 3. Math: WGS84 to UTM Zone 45N (EPSG:32645 - Standard for Central/Eastern Nepal)
+  // 3. Math: WGS84 to UTM Zone 45N (EPSG:32645 - Standard for Dhulikhel / Nepal)
   function latLonToUTM45N(lat, lon) {
     const a = 6378137.0;
     const f = 1 / 298.257223563;
@@ -125,7 +125,7 @@
     };
   }
 
-  // 4. Earth Sphere with NASA Blue Marble Texture
+  // 4. Earth Sphere with NASA Blue Marble
   const textureLoader = new THREE.TextureLoader();
   const earthTexture = textureLoader.load('img/earth_atmos_2048.jpg');
   earthTexture.anisotropy = 8;
@@ -154,17 +154,16 @@
   // 6. Geodetic Coordinate Graticules (Contour Green & Ochre Equator)
   const gridGroup = new THREE.Group();
   const gridMaterial = new THREE.LineBasicMaterial({
-    color: 0x2D6A4F, // --contour green
+    color: 0x2D6A4F,
     transparent: true,
     opacity: 0.3,
   });
   const equatorMaterial = new THREE.LineBasicMaterial({
-    color: 0xD97706, // --ochre
+    color: 0xD97706,
     transparent: true,
     opacity: 0.75,
   });
 
-  // Parallels (Latitude: 15° intervals)
   for (let lat = -75; lat <= 75; lat += 15) {
     const latRad = (lat * Math.PI) / 180;
     const r = RADIUS * 1.004 * Math.cos(latRad);
@@ -179,7 +178,6 @@
     gridGroup.add(line);
   }
 
-  // Meridians (Longitude: 30° intervals)
   for (let lon = 0; lon < 360; lon += 30) {
     const lonRad = (lon * Math.PI) / 180;
     const pts = [];
@@ -195,29 +193,62 @@
   }
   globeGroup.add(gridGroup);
 
-  // 7. Kathmandu University (KU / Dhulikhel / Banepa) 3D Surveyor Pinpoint
-  const kuLocalPos = latLonToVector3(KU_LAT, KU_LON, RADIUS * 1.012);
+  // 7. Exact Vector Position for Kathmandu University
+  const kuLocalPos = latLonToVector3(KU_LAT, KU_LON, RADIUS * 1.006);
+  const kuNormal = kuLocalPos.clone().normalize();
 
+  // 8. HIGH-RESOLUTION LOCAL ORTHOMOSAIC OF KATHMANDU UNIVERSITY (DHULIKHEL)
+  // Conformal satellite disc that seamlessly reveals campus buildings and roads upon local zoom
+  const kuOrthoTex = textureLoader.load('img/ku_campus_z16.jpg');
+  kuOrthoTex.anisotropy = 8;
+
+  const campusDiscGeom = new THREE.CircleGeometry(0.095, 64);
+  const campusDiscMat = new THREE.MeshBasicMaterial({
+    map: kuOrthoTex,
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide,
+    depthWrite: false
+  });
+  const campusDisc = new THREE.Mesh(campusDiscGeom, campusDiscMat);
+  campusDisc.position.copy(kuLocalPos.clone().multiplyScalar(1.001));
+  campusDisc.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), kuNormal);
+  globeGroup.add(campusDisc);
+
+  // Ochre Survey Boundary Ring around KU Campus
+  const campusBorderGeom = new THREE.RingGeometry(0.093, 0.098, 64);
+  const campusBorderMat = new THREE.MeshBasicMaterial({
+    color: 0xD97706,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.7
+  });
+  const campusBorder = new THREE.Mesh(campusBorderGeom, campusBorderMat);
+  campusBorder.position.copy(campusDisc.position);
+  campusBorder.quaternion.copy(campusDisc.quaternion);
+  globeGroup.add(campusBorder);
+
+  // 9. Kathmandu University 3D Surveyor Pinpoint & Beacons
   const pinGroup = new THREE.Group();
   pinGroup.position.copy(kuLocalPos);
-  pinGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), kuLocalPos.clone().normalize());
+  pinGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), kuNormal);
 
-  // Ochre Beacon Sphere
-  const pinHeadGeom = new THREE.SphereGeometry(0.022, 16, 16);
+  // Ochre Beacon
+  const pinHeadGeom = new THREE.SphereGeometry(0.016, 16, 16);
   const pinHeadMat = new THREE.MeshBasicMaterial({ color: 0xD97706 });
   const pinHead = new THREE.Mesh(pinHeadGeom, pinHeadMat);
-  pinHead.position.y = 0.045;
+  pinHead.position.y = 0.035;
   pinGroup.add(pinHead);
 
   // Surveyor Stalk in Ink
-  const pinStalkGeom = new THREE.CylinderGeometry(0.0035, 0.0035, 0.045, 8);
+  const pinStalkGeom = new THREE.CylinderGeometry(0.0025, 0.0025, 0.035, 8);
   const pinStalkMat = new THREE.MeshBasicMaterial({ color: 0x14261C });
   const pinStalk = new THREE.Mesh(pinStalkGeom, pinStalkMat);
-  pinStalk.position.y = 0.022;
+  pinStalk.position.y = 0.0175;
   pinGroup.add(pinStalk);
 
   // Pulsing Survey Radar Rings
-  const radarRingGeom = new THREE.RingGeometry(0.015, 0.048, 32);
+  const radarRingGeom = new THREE.RingGeometry(0.01, 0.038, 32);
   const radarRingMat = new THREE.MeshBasicMaterial({
     color: 0xD97706,
     side: THREE.DoubleSide,
@@ -228,37 +259,21 @@
   radarRing.rotation.x = Math.PI / 2;
   pinGroup.add(radarRing);
 
-  // Campus Geodetic Boundary Ring (KU Dhulikhel footprint indicator)
-  const kuBoundaryGeom = new THREE.RingGeometry(0.055, 0.062, 32);
-  const kuBoundaryMat = new THREE.MeshBasicMaterial({
-    color: 0x166534, // --forest
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.65
-  });
-  const kuBoundary = new THREE.Mesh(kuBoundaryGeom, kuBoundaryMat);
-  kuBoundary.rotation.x = Math.PI / 2;
-  pinGroup.add(kuBoundary);
-
   globeGroup.add(pinGroup);
 
-  // 8. Orbiting Sentinel-2A Satellite in Polar Sun-Synchronous Orbit
+  // 10. Satellite Orbit
   const satGroup = new THREE.Group();
   const satOrbitRadius = RADIUS * 1.34;
-
   const satGeom = new THREE.BoxGeometry(0.026, 0.016, 0.036);
   const satMat = new THREE.MeshStandardMaterial({ color: 0xFAF7F0, metalness: 0.6 });
   const satellite = new THREE.Mesh(satGeom, satMat);
-
   const panelGeom = new THREE.BoxGeometry(0.072, 0.002, 0.02);
   const panelMat = new THREE.MeshStandardMaterial({ color: 0x166534, metalness: 0.5 });
   const panels = new THREE.Mesh(panelGeom, panelMat);
   satellite.add(panels);
-
   satGroup.add(satellite);
   globeGroup.add(satGroup);
 
-  // Satellite orbit track in faint Ochre
   const orbitPts = [];
   for (let i = 0; i <= 90; i++) {
     const a = (i / 90) * Math.PI * 2;
@@ -270,27 +285,31 @@
   );
   globeGroup.add(orbitLine);
 
-  // 9. Initial Orientation: Target Kathmandu University squarely at center
-  const TARGET_ROT_X = 0.26;
-  const TARGET_ROT_Y = -Math.PI * 0.472;
+  // 11. Mathematical Exact Alignment: Target Kathmandu University to face camera (+Z axis)
+  const forwardTarget = new THREE.Vector3(0, 0, 1);
+  const kuExactQuat = new THREE.Quaternion().setFromUnitVectors(kuNormal, forwardTarget);
 
-  globeGroup.rotation.x = TARGET_ROT_X;
-  globeGroup.rotation.y = TARGET_ROT_Y;
+  // Default initial orientation: slight artistic tilt while keeping KU prominently facing viewer
+  const orbitInitialQuat = kuExactQuat.clone().multiply(
+    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), 0.12)
+  );
 
-  // 10. Geodetic State & Animation Variables
+  globeGroup.quaternion.copy(orbitInitialQuat);
+
+  // 12. State & Animation Management
   let isZoomed = false;
   let isAnimatingTransition = false;
   let animStartTime = 0;
-  const ANIM_DURATION = 1200; // ms
+  const ANIM_DURATION = 1300; // ms
 
   let startCamZ = ORBIT_ZOOM;
   let targetCamZ = ORBIT_ZOOM;
-  let startRotX = TARGET_ROT_X;
-  let targetRotX = TARGET_ROT_X;
-  let startRotY = TARGET_ROT_Y;
-  let targetRotY = TARGET_ROT_Y;
+  let startQuat = new THREE.Quaternion();
+  let targetQuat = new THREE.Quaternion();
+  let startCampusOpacity = 0;
+  let targetCampusOpacity = 0;
 
-  // 11. Live HUD Elements
+  // 13. UI & Telemetry Elements
   const hudLatLon = document.getElementById('hud-latlon');
   const hudUtm = document.getElementById('hud-utm');
   const hudStatus = document.getElementById('hud-status');
@@ -307,14 +326,14 @@
       hudUtm.textContent = `${utm.easting}m E ${utm.northing}m N`;
     }
     if (hudStatus && !isZoomed) {
-      hudStatus.textContent = isTargetKU ? '● TARGET: KU / BANEPA' : '● GPS TRACKING';
+      hudStatus.textContent = isTargetKU ? '● KU / DHULIKHEL' : '● GPS SCANNING';
     }
   }
 
-  // Initialize HUD with Kathmandu University coordinates
+  // Initialize with KU coordinates
   updateHUD(KU_LAT, KU_LON, true);
 
-  // 11. Raycaster for Live Cursor Lat/Lon Scanning
+  // 14. Raycaster for Live Cursor Scanning
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -327,7 +346,6 @@
     const intersects = raycaster.intersectObject(earthMesh);
 
     if (intersects.length > 0) {
-      // Convert intersection point from world to globe local coordinate space
       const localIntersect = globeGroup.worldToLocal(intersects[0].point.clone());
       const coords = vector3ToLatLon(localIntersect);
       updateHUD(coords.lat, coords.lon, false);
@@ -341,33 +359,28 @@
   }
   canvas.addEventListener('mousemove', onPointerMoveHUD, { passive: true });
 
-  // 12. Cinematic Fly-To Zoom Functions
+  // 15. Cinematic Fly-To: Global Orbit -> Kathmandu University Local Dhulikhel View
   function flyToKathmanduUniversity() {
     isZoomed = true;
     isAnimatingTransition = true;
     animStartTime = performance.now();
 
     startCamZ = camera.position.z;
-    targetCamZ = KU_ZOOM;
+    targetCamZ = LOCAL_KU_ZOOM;
 
-    startRotX = globeGroup.rotation.x;
-    targetRotX = TARGET_ROT_X;
+    startQuat.copy(globeGroup.quaternion);
+    targetQuat.copy(kuExactQuat); // Perfectly align KU directly with crosshairs
 
-    startRotY = globeGroup.rotation.y;
-    // Align closest 360 wrap to targetRotY
-    const twoPi = Math.PI * 2;
-    let diff = (TARGET_ROT_Y - startRotY) % twoPi;
-    if (diff < -Math.PI) diff += twoPi;
-    if (diff > Math.PI) diff -= twoPi;
-    targetRotY = startRotY + diff;
+    startCampusOpacity = campusDiscMat.opacity;
+    targetCampusOpacity = 0.98; // Reveal high-res campus orthomosaic!
 
     if (kuCallout) kuCallout.classList.remove('is-hidden');
     if (hudStatus) {
-      hudStatus.textContent = '● KU / BANEPA LOCKED [ZOOM 1.25x]';
+      hudStatus.textContent = '● LOCAL LEVEL: KATHMANDU UNIVERSITY';
       hudStatus.style.color = 'var(--ochre-text)';
     }
     if (captionText) {
-      captionText.innerHTML = 'fig. 1a · kathmandu university (ku) · geomatics engineering · dhulikhel · utm 45n';
+      captionText.innerHTML = 'fig. 1a · dhulikhel local level · kathmandu university (ku) · dept of geomatics';
     }
   }
 
@@ -379,11 +392,11 @@
     startCamZ = camera.position.z;
     targetCamZ = ORBIT_ZOOM;
 
-    startRotX = globeGroup.rotation.x;
-    targetRotX = TARGET_ROT_X;
+    startQuat.copy(globeGroup.quaternion);
+    targetQuat.copy(orbitInitialQuat);
 
-    startRotY = globeGroup.rotation.y;
-    targetRotY = TARGET_ROT_Y;
+    startCampusOpacity = campusDiscMat.opacity;
+    targetCampusOpacity = 0.0; // Hide local orthomosaic in global view
 
     if (kuCallout) kuCallout.classList.add('is-hidden');
     if (hudStatus) {
@@ -403,7 +416,7 @@
     });
   }
 
-  // 13. Drag & Interaction
+  // 16. Touch & Drag Controls
   const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let isDragging = false;
   let prevPointerPos = { x: 0, y: 0 };
@@ -427,11 +440,12 @@
       hasMoved = true;
     }
 
-    globeGroup.rotation.y += deltaX * (isZoomed ? 0.002 : 0.005);
-    globeGroup.rotation.x += deltaY * (isZoomed ? 0.002 : 0.005);
+    const sens = isZoomed ? 0.0015 : 0.005;
+    const rotY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * sens);
+    const rotX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * sens);
 
-    // Limit pitch so poles don't flip
-    globeGroup.rotation.x = Math.max(-1.1, Math.min(1.1, globeGroup.rotation.x));
+    globeGroup.quaternion.multiplyQuaternions(rotY, globeGroup.quaternion);
+    globeGroup.quaternion.multiplyQuaternions(rotX, globeGroup.quaternion);
 
     prevPointerPos = { x: e.clientX, y: e.clientY };
   }
@@ -441,16 +455,12 @@
       isDragging = false;
       canvas.style.cursor = isZoomed ? 'zoom-out' : 'grab';
 
-      // If user clicked without dragging, toggle zoom!
+      // Click detected (without drag) -> toggle zoom!
       if (!hasMoved && !isAnimatingTransition) {
-        if (!isZoomed) {
-          flyToKathmanduUniversity();
-        } else {
-          resetOrbit();
-        }
+        if (!isZoomed) flyToKathmanduUniversity();
+        else resetOrbit();
       }
 
-      // Resume gentle spin after 5s if idle and not zoomed
       if (!prefersReducedMotion && !isZoomed) {
         setTimeout(() => {
           if (!isDragging && !isZoomed) autoRotate = true;
@@ -463,24 +473,22 @@
   window.addEventListener('pointermove', onPointerMove);
   window.addEventListener('pointerup', onPointerUp);
 
-  // Double click anywhere on canvas resets
   canvas.addEventListener('dblclick', () => {
     if (isZoomed) resetOrbit();
     else flyToKathmanduUniversity();
   });
 
-  // 14. Smooth Animation Loop
-  let radarScale = 1;
-  let satAngle = 0;
-
+  // 17. Animation Loop with Quaternion Slerp
   function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
+  let radarScale = 1;
+  let satAngle = 0;
+
   function animate() {
     requestAnimationFrame(animate);
 
-    // Handle Cinematic Fly-To transition
     if (isAnimatingTransition) {
       const now = performance.now();
       const elapsed = now - animStartTime;
@@ -488,14 +496,16 @@
       const eased = easeInOutCubic(progress);
 
       camera.position.z = startCamZ + (targetCamZ - startCamZ) * eased;
-      globeGroup.rotation.x = startRotX + (targetRotX - startRotX) * eased;
-      globeGroup.rotation.y = startRotY + (targetRotY - startRotY) * eased;
+      globeGroup.quaternion.slerpQuaternions(startQuat, targetQuat, eased);
+      campusDiscMat.opacity = startCampusOpacity + (targetCampusOpacity - startCampusOpacity) * eased;
+      campusBorderMat.opacity = 0.3 + (targetCampusOpacity * 0.7);
 
       if (progress >= 1) {
         isAnimatingTransition = false;
       }
     } else if (autoRotate && !isZoomed && !prefersReducedMotion) {
-      globeGroup.rotation.y += 0.0006;
+      const slowTurn = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.0006);
+      globeGroup.quaternion.multiplyQuaternions(slowTurn, globeGroup.quaternion);
       cloudsMesh.rotation.y += 0.00015;
     }
 
@@ -529,7 +539,6 @@
     renderer.setSize(width, height);
   });
 
-  // Export controls for external UI hooks if needed
   window.flyToKU = flyToKathmanduUniversity;
   window.resetGlobe = resetOrbit;
 })();
