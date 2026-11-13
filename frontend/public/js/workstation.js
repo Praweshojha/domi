@@ -105,45 +105,56 @@
   requestAnimationFrame(animate);
 
   // Mode Switcher Controls
-  const btnGlobe = document.getElementById('btn-mode-globe');
+  const btnSat = document.getElementById('btn-mode-sat');
+  const btnOsm = document.getElementById('btn-mode-osm');
   const btnPc = document.getElementById('btn-mode-pc');
   const earthCanvas = document.getElementById('earth-canvas');
   const pinCallout = document.getElementById('dial-pin-callout');
-  const globeHud = document.getElementById('globe-hud');
-  const kuCallout = document.getElementById('ku-campus-callout');
+  const zoomControls = document.querySelector('.dial-zoom-controls');
   const captionText = document.getElementById('dial-mode-text');
 
-  function setMode(mode) {
-    if (mode === 'pc') {
-      isVisible = true;
-      if (btnPc) btnPc.classList.add('is-active');
-      if (btnGlobe) btnGlobe.classList.remove('is-active');
-      if (canvas) canvas.classList.remove('is-hidden');
-      if (earthCanvas) earthCanvas.classList.add('is-hidden');
-      if (pinCallout) pinCallout.style.opacity = '0';
-      if (globeHud) globeHud.style.display = 'none';
-      if (kuCallout) kuCallout.classList.add('is-hidden');
-      if (captionText) {
-        captionText.innerHTML = 'fig. 1b · geospatial 3d workstation · interactive horizontal orbit';
-      }
-      controls.autoRotate = true;
-    } else {
-      isVisible = false;
-      if (btnGlobe) btnGlobe.classList.add('is-active');
-      if (btnPc) btnPc.classList.remove('is-active');
-      if (canvas) canvas.classList.add('is-hidden');
-      if (earthCanvas) earthCanvas.classList.remove('is-hidden');
-      if (pinCallout) pinCallout.style.opacity = '1';
-      if (globeHud) globeHud.style.display = 'flex';
-      if (captionText) {
-        captionText.innerHTML = 'fig. 1 · banepa 3d drone model · 27.62°N 85.54°E · wgs84';
-      }
+  function showPc() {
+    isVisible = true;
+    if (btnPc) btnPc.classList.add('is-active');
+    if (btnSat) btnSat.classList.remove('is-active');
+    if (btnOsm) btnOsm.classList.remove('is-active');
+    if (canvas) canvas.classList.remove('is-hidden');
+    if (earthCanvas) earthCanvas.classList.add('is-hidden');
+    if (pinCallout) pinCallout.style.opacity = '0';
+    if (zoomControls) zoomControls.style.display = 'none';
+    if (captionText) {
+      captionText.innerHTML = 'fig. 1c · geospatial 3d workstation · interactive horizontal orbit';
     }
+    controls.autoRotate = true;
   }
 
-  if (btnGlobe && btnPc) {
-    btnGlobe.addEventListener('click', () => setMode('globe'));
-    btnPc.addEventListener('click', () => setMode('pc'));
+  function hidePc() {
+    isVisible = false;
+    if (btnPc) btnPc.classList.remove('is-active');
+    if (canvas) canvas.classList.add('is-hidden');
+    if (earthCanvas) earthCanvas.classList.remove('is-hidden');
+    if (pinCallout) pinCallout.style.opacity = '1';
+    if (zoomControls) zoomControls.style.display = 'flex';
+  }
+
+  if (btnPc) {
+    btnPc.addEventListener('click', showPc);
+  }
+  if (btnSat) {
+    btnSat.addEventListener('click', () => {
+      hidePc();
+      if (btnSat) btnSat.classList.add('is-active');
+      if (btnOsm) btnOsm.classList.remove('is-active');
+      if (window.setGlobeLayer) window.setGlobeLayer('sat');
+    });
+  }
+  if (btnOsm) {
+    btnOsm.addEventListener('click', () => {
+      hidePc();
+      if (btnOsm) btnOsm.classList.add('is-active');
+      if (btnSat) btnSat.classList.remove('is-active');
+      if (window.setGlobeLayer) window.setGlobeLayer('osm');
+    });
   }
 
   // Responsive Resize
