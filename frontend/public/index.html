@@ -16,12 +16,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/leaflet.css">
-  <link rel="stylesheet" href="css/style.css?v=ambient1">
+  <link rel="stylesheet" href="css/style.css?v=opt1">
 </head>
 <body>
   <!-- HARD CONSTRAINT 1: Ambient Background Video (Preserved untouched; no scrim, no overlay) -->
   <div class="bg-video-container" aria-hidden="true">
-    <video id="bg-video" autoplay muted loop playsinline preload="auto">
+    <video id="bg-video" autoplay muted loop playsinline webkit-playsinline preload="metadata">
       <source src="video/bg_loop.mp4" type="video/mp4">
     </video>
     <!-- Geodetic 3D LiDAR & GNSS Coordinate Lattice (Overlaying video in Forest & Ochre) -->
@@ -674,14 +674,14 @@
   <script src="js/OrbitControls.js"></script>
   <script src="js/GLTFLoader.js"></script>
   <script src="js/leaflet.js"></script>
-  <script src="js/real_map.js?v=ku4"></script>
-  <script src="js/earth_globe.js?v=ku4"></script>
-  <script src="js/lidar_points.js"></script>
-  <script src="js/tilt.js"></script>
-  <script src="js/tech_balls.js"></script>
-  <script src="js/workstation.js?v=ws2"></script>
+  <script src="js/real_map.js?v=opt1"></script>
+  <script src="js/earth_globe.js?v=opt1"></script>
+  <script src="js/lidar_points.js?v=opt1"></script>
+  <script src="js/tilt.js?v=opt1"></script>
+  <script src="js/tech_balls.js?v=opt1"></script>
+  <script src="js/workstation.js?v=opt1"></script>
     <script src="js/tsparticles.bundle.min.js"></script>
-  <script src="js/ambient_effects.js"></script>
-<script src="js/app.js?v=sec4"></script>
+  <script src="js/ambient_effects.js?v=opt1"></script>
+<script src="js/app.js?v=opt1"></script>
 </body>
 </html>

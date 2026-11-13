@@ -20,6 +20,7 @@
   const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
   camera.position.z = 2.4;
 
+  const isMobile = window.innerWidth < 768;
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true,
@@ -27,10 +28,10 @@
     powerPreference: 'low-power'
   });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5));
 
-  // Geodetic LiDAR Point Cloud Generation
-  const POINT_COUNT = 2400;
+  // Geodetic LiDAR Point Cloud Generation (Scaled for mobile efficiency)
+  const POINT_COUNT = isMobile ? 750 : 2400;
   const positions = new Float32Array(POINT_COUNT * 3);
   const colors = new Float32Array(POINT_COUNT * 3);
 

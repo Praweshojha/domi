@@ -29,14 +29,21 @@
   let targetCamZ = MAX_ORBIT_Z;
   camera.position.z = MAX_ORBIT_Z;
 
+  const isMobile = window.innerWidth < 768;
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     antialias: true,
     alpha: true,
-    powerPreference: 'high-performance'
+    powerPreference: isMobile ? 'low-power' : 'high-performance'
   });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(isMobile ? 1.25 : Math.min(window.devicePixelRatio || 1, 2));
+
+  // Handle Mobile WebGL Context Loss / Restore gracefully
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    console.warn('Globe WebGL context suspended');
+  }, false);
 
   // Terrain Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.96);
@@ -78,8 +85,9 @@
   const earthTexture = textureLoader.load('img/earth_atmos_2048.jpg');
   earthTexture.anisotropy = 8;
 
-  const earthGeometry = new THREE.SphereGeometry(RADIUS, 64, 64);
+  const earthGeometry = new THREE.SphereGeometry(RADIUS, isMobile ? 48 : 64, isMobile ? 48 : 64);
   const earthMaterial = new THREE.MeshStandardMaterial({
+    color: 0x183022, // Immediate terrain forest base while 2048px texture loads over mobile data
     map: earthTexture,
     roughness: 0.68,
     metalness: 0.1,

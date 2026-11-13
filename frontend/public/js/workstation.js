@@ -1,7 +1,7 @@
 /**
  * 3D Survey Workstation Model Viewer (Ported ComputersCanvas)
  * Pure Three.js + GLTFLoader implementation matching reactjs18-3d-portfolio-main
- * Adheres strictly to Terrain Tokens: Sand, Forest, Ochre & Ink
+ * Optimized for Mobile/Android: Lazy loads heavy 18MB GLTF model only on demand
  */
 
 (function initWorkstation() {
@@ -22,12 +22,11 @@
     canvas: canvas,
     alpha: true,
     antialias: true,
-    powerPreference: 'high-performance'
+    powerPreference: 'low-power'
   });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.shadowMap.enabled = false; // Disabled shadow maps for mobile performance
 
   // Terrain Studio Lighting (Preserving Terrain Tokens, strictly NO cyber purple)
   const hemiLight = new THREE.HemisphereLight(0xFAF7F0, 0x14261C, 0.65);
@@ -37,7 +36,6 @@
   spotLight.position.set(-15, 35, 15);
   spotLight.angle = 0.18;
   spotLight.penumbra = 1;
-  spotLight.castShadow = true;
   scene.add(spotLight);
 
   const forestRim = new THREE.DirectionalLight(0x166534, 0.7); // --forest rim
@@ -48,7 +46,7 @@
   ochreAccent.position.set(0, 3, 3);
   scene.add(ochreAccent);
 
-  // Constrained OrbitControls (exactly like Computers.tsx in template)
+  // Constrained OrbitControls
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enablePan = false;
   controls.enableZoom = false;
@@ -56,46 +54,47 @@
   controls.dampingFactor = 0.05;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.8;
-  // Lock polar angle to keep the PC level on desk
   controls.maxPolarAngle = Math.PI / 2;
   controls.minPolarAngle = Math.PI / 2;
 
   let isLoaded = false;
+  let isLoading = false;
   let modelGroup = null;
-  const isMobile = window.innerWidth <= 600;
-
-  // Load GLTF Model from local models directory
-  const loader = new THREE.GLTFLoader();
-  loader.load(
-    'models/desktop_pc/scene.gltf',
-    (gltf) => {
-      modelGroup = gltf.scene;
-
-      // Scale and position matching Computers.tsx
-      const scale = isMobile ? 0.68 : 0.76;
-      modelGroup.scale.set(scale, scale, scale);
-      modelGroup.position.set(0, isMobile ? -1.8 : -2.4, -0.6);
-      modelGroup.rotation.set(-0.01, -0.2, -0.08);
-
-      modelGroup.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-
-      scene.add(modelGroup);
-      isLoaded = true;
-    },
-    undefined,
-    (err) => {
-      console.warn('GLTF loading info:', err);
-    }
-  );
-
-  // Render Loop
   let isVisible = false;
 
+  // Lazy Load GLTF Model on User Request (Saves 18MB on initial page load for mobile)
+  function loadModel(onComplete) {
+    if (isLoaded || isLoading) {
+      if (onComplete) onComplete();
+      return;
+    }
+    isLoading = true;
+    const isMobile = window.innerWidth <= 600;
+
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      'models/desktop_pc/scene.gltf',
+      (gltf) => {
+        modelGroup = gltf.scene;
+        const scale = isMobile ? 0.68 : 0.76;
+        modelGroup.scale.set(scale, scale, scale);
+        modelGroup.position.set(0, isMobile ? -1.8 : -2.4, -0.6);
+        modelGroup.rotation.set(-0.01, -0.2, -0.08);
+
+        scene.add(modelGroup);
+        isLoaded = true;
+        isLoading = false;
+        if (onComplete) onComplete();
+      },
+      undefined,
+      (err) => {
+        console.warn('Workstation model load notice:', err);
+        isLoading = false;
+      }
+    );
+  }
+
+  // Render Loop
   function animate() {
     requestAnimationFrame(animate);
     if (!isVisible) return;
@@ -124,8 +123,20 @@
     if (interactiveMap) interactiveMap.classList.add('is-hidden');
     if (pinCallout) pinCallout.style.opacity = '0';
     if (zoomControls) zoomControls.style.display = 'none';
-    if (captionText) {
-      captionText.innerHTML = 'fig. 1 · 3d geomatics survey workstation · [drag to rotate terminal]';
+
+    if (!isLoaded) {
+      if (captionText) {
+        captionText.innerHTML = 'fig. 1 · loading 3d survey workstation...';
+      }
+      loadModel(() => {
+        if (isVisible && captionText) {
+          captionText.innerHTML = 'fig. 1 · 3d geomatics survey workstation · [drag to rotate terminal]';
+        }
+      });
+    } else {
+      if (captionText) {
+        captionText.innerHTML = 'fig. 1 · 3d geomatics survey workstation · [drag to rotate terminal]';
+      }
     }
     controls.autoRotate = true;
   }
@@ -137,15 +148,9 @@
     if (zoomControls) zoomControls.style.display = 'flex';
   }
 
-  if (btnPc) {
-    btnPc.addEventListener('click', showPc);
-  }
-  if (btnGlobe) {
-    btnGlobe.addEventListener('click', hidePc);
-  }
-  if (btnMap) {
-    btnMap.addEventListener('click', hidePc);
-  }
+  if (btnPc) btnPc.addEventListener('click', showPc);
+  if (btnGlobe) btnGlobe.addEventListener('click', hidePc);
+  if (btnMap) btnMap.addEventListener('click', hidePc);
 
   // Responsive Resize
   function onResize() {

@@ -8,7 +8,8 @@
   'use strict';
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(hover: none)').matches);
+  if (prefersReducedMotion || isTouchDevice) return;
 
   function attachTilt(el) {
     if (el._hasTilt) return;

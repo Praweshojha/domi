@@ -25,7 +25,7 @@
   const DHULIKHEL_COORDS = [27.6195, 85.5385]; // Kathmandu University, Dhulikhel
   const DEFAULT_ZOOM = 14; // Default view showing Dhulikhel city and university valley
 
-  // 1. Initialize Leaflet Map
+  // 1. Initialize Leaflet Map (Optimized for Android & Touchscreens)
   const map = L.map('interactive-map', {
     center: DHULIKHEL_COORDS,
     zoom: DEFAULT_ZOOM,
@@ -33,6 +33,7 @@
     maxZoom: 19,
     zoomControl: false, // We use custom styled bezel controls
     attributionControl: false,
+    tap: false, // Critical for fast, responsive pointer events on Android
     scrollWheelZoom: true,
     smoothWheelZoom: true,
     smoothSensitivity: 1.5,
